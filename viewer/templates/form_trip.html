@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.code.errors }}
+        {{ form.where_from.errors }}
+        {{ form.where_to.errors }}
+        {{ form.where_to_hotel.errors }}
+        <div class="form-group">
+            <label for="{{ form.code.id_for_label }}">Code:</label>
+            {{ form.code }}
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.where_from.id_for_label }}">Where from:</label>
+                    {{ form.where_from }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.where_to.id_for_label }}">Where to:</label>
+                    {{ form.where_to }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.where_to_hotel.id_for_label }}">Hotel:</label>
+                    {{ form.where_to_hotel }}
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.departure_date.id_for_label }}">Departure date:</label>
+            {{ form.departure_date }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.return_date.id_for_label }}">Return date:</label>
+            {{ form.return_date }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.duration.id_for_label }}">Duration:</label>
+            {{ form.duration }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.type.id_for_label }}">Type:</label>
+            {{ form.type }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.adult_price.id_for_label }}">Price for adults:</label>
+            {{ form.adult_price }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.child_price.id_for_label }}">Price for children:</label>
+            {{ form.child_price }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.promoted.id_for_label }}">Promoted:</label>
+                {{ form.promoted }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.adult_places.id_for_label }}">Places available for adults:</label>
+            {{ form.adult_places }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.child_places.id_for_label }}">Places available for children:</label>
+            {{ form.child_places }}
+        </div>
+        <input type="submit" value="Submit" class="btn btn-primary">
+    </form>
+{% endblock %}

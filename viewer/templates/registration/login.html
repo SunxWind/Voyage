@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2 class="mb-4 text-center">Login</h2>
+{% if user.is_authenticated %}
+    You are logged in
+{% else %}
+<form method="post" class="w-50 mx-auto">
+    {% csrf_token %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="mb-3">
+        <label for="username" class="form-label">User name</label>
+        <input type="text" name="username" id="username" class="form-control" required>
+    </div>
+        <div class="mb-3">
+        <label for="password" class="form-label">Password</label>
+        <input type="password" name="password" id="password" class="form-control" required>
+    </div>
+    <input type="submit" class="btn btn-primary w-100" value="Login">
+</form>
+{% endif %}
+{% endblock %}
