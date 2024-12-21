@@ -5,7 +5,7 @@ from django.forms import (
   CharField, DateField, Form, ModelForm, IntegerField, ModelChoiceField, Textarea, TextInput, EmailInput, PasswordInput, ModelForm, DateInput, NumberInput
 )
 
-from viewer.models import Country, Hotel, Airport, Trip
+from viewer.models import Hotel, Airport, Trip  # Country
 from django.contrib.auth.forms import UserCreationForm
 
 class TripModelForm(ModelForm):
@@ -33,5 +33,6 @@ class TripForm(TripModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'

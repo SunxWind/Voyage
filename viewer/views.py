@@ -7,7 +7,7 @@ from django.http import HttpResponse
 
 from django.views.generic import TemplateView, FormView
 
-from viewer.models import Trip
+from viewer.models import Trip, City, Airport
 from viewer.forms import TripForm
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -45,6 +45,10 @@ class TripCreateView(FormView):
     form_class = TripForm
     success_url = reverse_lazy('trips')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
     def form_valid(self, form):
         result = super().form_valid(form)
         cleaned_data = form.cleaned_data
@@ -53,6 +57,8 @@ class TripCreateView(FormView):
             where_from=cleaned_data['where_from'],
             where_to=cleaned_data['where_to'],
             where_to_hotel=cleaned_data['where_to_hotel'],
+            airport_depart=cleaned_data['airport_depart'],
+            airport_arrive=cleaned_data['airport_arrive'],
             departure_date=cleaned_data['departure_date'],
             return_date=cleaned_data['return_date'],
             duration=cleaned_data['duration'],

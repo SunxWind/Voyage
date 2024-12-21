@@ -39,7 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'viewer',
-    'active_link'
+    'active_link',
+    'django_countries',
+    'smart_selects'
 ]
 
 MIDDLEWARE = [
@@ -141,3 +143,5 @@ LOGOUT_REDIRECT_URL = '/login'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+USE_JQUERY_URL = True

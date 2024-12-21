@@ -3,6 +3,7 @@
 {% block content %}
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        {{ form.media.js }}
         {{ form.non_field_errors }}
         {{ form.code.errors }}
         {{ form.where_from.errors }}
@@ -29,6 +30,20 @@
                 <div class="form-group">
                     <label for="{{ form.where_to_hotel.id_for_label }}">Hotel:</label>
                     {{ form.where_to_hotel }}
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.airport_depart.id_for_label }}">Departure airport:</label>
+                    {{ form.airport_depart }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.airport_arrive.id_for_label }}">Arrival airport:</label>
+                    {{ form.airport_arrive }}
                 </div>
             </div>
         </div>
