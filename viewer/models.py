@@ -5,6 +5,7 @@ from django.db.models import (
     Model, TextField, ImageField, BooleanField, Choices
 )
 from smart_selects.db_fields import ChainedForeignKey
+from django.core.validators import MinValueValidator
 
 # from django.contrib.auth.models import User
 
@@ -41,7 +42,7 @@ class City(Model):
 
 
 class Hotel(Model):
-    name = CharField(max_length=30)
+    name = CharField(max_length=100)
     standard = IntegerField(default=None, null=False)
     description = TextField(default=None)
     city = ForeignKey(City, on_delete=DO_NOTHING, default=None)
@@ -59,18 +60,17 @@ class Airport(Model):
 
 
 class Trip(Model):
-    # NA = '--'
     BB = 'BB'
     HB = 'HB'
     FB = 'FB'
     AI = 'AI'
 
-    CHOICES = (
-        # (NA, '--'),
-        (BB, 'BB'),
-        (HB, 'HB'),
-        (FB, 'FB'),
-        (AI, 'AI'),
+    TYPE_CHOICES = (
+        (None, 'select type of stay'),
+        (BB, 'bed & breakfast'),
+        (HB, 'half board'),
+        (FB, 'full board'),
+        (AI, 'all inclusive'),
     )
 
     code = CharField(max_length=7)
@@ -92,16 +92,26 @@ class Trip(Model):
         show_all=False,
         auto_choose=True,
         sort=True)
-    where_to_hotel = ForeignKey(Hotel, on_delete=DO_NOTHING, default=None)
+    where_to_hotel = ChainedForeignKey(
+        Hotel,
+        chained_field="where_to",
+        chained_model_field="city",
+        show_all=False,
+        auto_choose=True,
+        sort=True)
     departure_date = DateField(default=None)
     return_date = DateField(default=None)
-    duration = IntegerField(default=None, null=False)
-    type = CharField(max_length=20, choices=CHOICES, help_text="Choose a type of the trip", default=None)
-    adult_price = DecimalField(max_digits=8, decimal_places=2)
-    child_price = DecimalField(max_digits=8, decimal_places=2)
+    duration = IntegerField(default=None, null=False, validators=[MinValueValidator(1)])
+    type = CharField(max_length=20, choices=TYPE_CHOICES, blank=False)
+    adult_price = DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
+    child_price = DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
     promoted = BooleanField(default=False)
-    adult_places = IntegerField(default=None, null=False)
-    child_places = IntegerField(default=None, null=False)
+    adult_places = IntegerField(default=None, null=False, validators=[MinValueValidator(0)])
+    child_places = IntegerField(default=None, null=False, validators=[MinValueValidator(0)])
+    description = TextField(default=None)
+    short_description = TextField(default=None)
+    image = ImageField(upload_to="images", default=None, null=True)
+    image_small = ImageField(upload_to="images", default=None, null=True)
 
 
 
