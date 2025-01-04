@@ -51,8 +51,7 @@
 <div id="carouselPromotedTrips" class="carousel slide d-flex align-items-start" data-ride="carousel" style="height: 610px">
     <div class="carousel-inner">
         {% for trips in promoted_trips %}
-            {% if forloop.first %}
-            <div class="carousel-item active">{% else %}<div class="carousel-item">{% endif %}
+            {% if forloop.first %}<div class="carousel-item active">{% else %}<div class="carousel-item">{% endif %}
                 <div class="card-deck d-flex justify-content-around">
                     {% for trip in trips %}
                     <div class="d-flex justify-content-around flex-column" style="width: 20em; height: 530px">

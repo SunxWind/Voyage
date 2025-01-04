@@ -14,14 +14,16 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include, re_path
-from django.contrib.auth import views
-import smart_selects
-import Voyage.settings as settings
+from django.urls import path, include
 
-from viewer.views import IndexView, TripDetailsView, TripCreateView, CustomLoginView
+from viewer.views import (
+    IndexView, TripDetailsView, TripCreateView, TripPurchaseView, CustomLoginView, RegisterView, ProfileView, CustomLogoutView
+)
+
+from django.contrib.auth import views
+import Voyage.settings as settings
+from django.conf.urls.static import static
 
 
 urlpatterns = [
@@ -29,11 +31,14 @@ urlpatterns = [
     path(r'^chaining/', include('smart_selects.urls',)),
     path('', IndexView.as_view(), name='index'),
     path('trip/details', TripDetailsView.as_view(), name='trip_details'),
+    path('trip_purchase', TripPurchaseView.as_view(), name='trip_purchase'),
     # path('some_page', SomePageView.as_view(), name='some_page'),
     path('trip_add', TripCreateView.as_view(), name='trip_add'),
 
     path('login', CustomLoginView.as_view(), name='login'),
-    path('logout/', views.LogoutView.as_view(), name='logout'),
+    path('logout_page', CustomLogoutView.as_view(), name='logout'),  # Does not work properly. Redirects to django default logout page, insted of user template logged_out.html.
+    path('register', RegisterView.as_view(), name='register'),
+    path('profile', ProfileView.as_view(), name='profile'),
 ]
 
 if settings.DEBUG:  # new

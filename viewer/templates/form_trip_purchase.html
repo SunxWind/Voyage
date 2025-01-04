@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form-group">
+            Fill in the required fields of the form to purchase the trip to {{ trip.where_to }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.firstname.id_for_label }}">First name:</label>
+            {{ form.firstname }}
+            <p class="textcolor: red">{{ form.firstname.errors }}</p>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.lastname.id_for_label }}">Second Name:</label>
+            {{ form.lastname }}
+            <p class="textcolor: red">{{ form.lastname.errors }}</p>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.birth_date.id_for_label }}">Last Name:</label>
+            {{ form.birth_date }}
+            <p class="textcolor: red">{{ form.birth_date.errors }}</p>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.amount_adult.id_for_label }}">Adults:</label>
+            {{ form.amount_adult }}
+            <p class="textcolor: red">{{ form.amount_adult.errors }}</p>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.amount_child.id_for_label }}">Children:</label>
+            {{ form.amount_child }}
+            <p class="textcolor: red">{{ form.amount_child.errors }}</p>
+        </div>
+        <input type="hidden" name="trip_id" value="{{ trip.id }}">
+        <input type="submit" value="Purchase" class="btn btn-primary">
+    </form>
+{% endblock %}

@@ -26,7 +26,7 @@
             <h5 class="card-title">Price</h5>
             <p class="card-text">Adults: {{ trip.adult_price }} CZK</p>
             <p class="card-text">Children: {{ trip.child_price }} CZK</p>
-            <a href="#" class="btn btn-primary">Purchase</a>
+            <a href="{% url 'trip_purchase' %}?trip={{ trip.id }}" class="btn btn-primary">Purchase</a>
         </div>
     </div>
     <div class="card-body">

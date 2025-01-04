@@ -58,13 +58,21 @@
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{% url 'trip_add' %}">Add trip</a>
-                        <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit">Logout</button>
+                        </form>
                     </div>
                 </li>
                 {% else %}
                 <li class="nav-item">
                     <a class="nav-link {% active_link 'login' strict=True %}" href="{% url 'login' %}">
                         Login
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% active_link 'register' strict=True %}" href="{% url 'register' %}">
+                        Register
                     </a>
                 </li>
                 {% endif %}

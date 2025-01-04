@@ -114,4 +114,13 @@ class Trip(Model):
     image_small = ImageField(upload_to="images", default=None, null=True)
 
 
+class PurchasedTrip(Model):
+    trip = ForeignKey(Trip, on_delete=DO_NOTHING, default=None)
+    firstname = CharField(max_length=128)
+    lastname = CharField(max_length=128)
+    birth_date = DateField(default=None, null=False)
+    amount_adult = IntegerField(default=None, null=False)
+    amount_child = IntegerField(default=None, null=False)
+
+
 
