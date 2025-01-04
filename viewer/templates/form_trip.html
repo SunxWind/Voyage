@@ -4,10 +4,20 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.media.js }}
-        <div class="form-group">
-            <label for="{{ form.code.id_for_label }}">Code:</label>
-            {{ form.code }}
-            <p class="textcolor: red">{{ form.code.errors }}</p>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.code.id_for_label }}">Code:</label>
+                    {{ form.code }}
+                    <p class="textcolor: red">{{ form.code.errors }}</p>
+                </div>
+            </div>
+            <div class="col">
+                <label for="{{ form.promoted.id_for_label }}">Promoted:</label>
+                <div class="form-group d-flex d-flex-inline align-items-center justify-content-left">
+                    <div style="width: 25px">{{ form.promoted }}</div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col">
@@ -22,13 +32,6 @@
                     <label for="{{ form.where_to.id_for_label }}">Where to:</label>
                     {{ form.where_to }}
                     {{ form.where_to.errors }}
-                </div>
-            </div>
-            <div class="col">
-                <div class="form-group">
-                    <label for="{{ form.where_to_hotel.id_for_label }}">Hotel:</label>
-                    {{ form.where_to_hotel }}
-                    {{ form.where_to_hotel.errors }}
                 </div>
             </div>
         </div>
@@ -48,48 +51,91 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <label for="{{ form.departure_date.id_for_label }}">Departure date:</label>
-            {{ form.departure_date }}
-            {{ form.departure_date.errors }}
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.where_to_hotel.id_for_label }}">Hotel:</label>
+                    {{ form.where_to_hotel }}
+                    {{ form.where_to_hotel.errors }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.type.id_for_label }}">Type:</label>
+                    {{ form.type }}
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="{{ form.return_date.id_for_label }}">Return date:</label>
-            {{ form.return_date }}
-            {{ form.return_date.errors }}
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.departure_date.id_for_label }}">Departure date:</label>
+                    {{ form.departure_date }}
+                    {{ form.departure_date.errors }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.return_date.id_for_label }}">Return date:</label>
+                    {{ form.return_date }}
+                    {{ form.return_date.errors }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.duration.id_for_label }}">Duration:</label>
+                    {{ form.duration }}
+                    <p class="text-red">{{ form.duration.errors }}</p>
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="{{ form.duration.id_for_label }}">Duration:</label>
-            {{ form.duration }}
-            <p class="text-red">{{ form.duration.errors }}</p>
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.adult_price.id_for_label }}">Price for adults:</label>
+                    {{ form.adult_price }}
+                    {{ form.adult_price.errors }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.child_price.id_for_label }}">Price for children:</label>
+                    {{ form.child_price }}
+                    {{ form.child_price.errors }}
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="{{ form.type.id_for_label }}">Type:</label>
-            {{ form.type }}
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.adult_places.id_for_label }}">Places available for adults:</label>
+                    {{ form.adult_places }}
+                    {{ form.adult_places.errors }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.child_places.id_for_label }}">Places available for children:</label>
+                    {{ form.child_places }}
+                    {{ form.child_places.errors }}
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="{{ form.adult_price.id_for_label }}">Price for adults:</label>
-            {{ form.adult_price }}
-            {{ form.adult_price.errors }}
-        </div>
-        <div class="form-group">
-            <label for="{{ form.child_price.id_for_label }}">Price for children:</label>
-            {{ form.child_price }}
-            {{ form.child_price.errors }}
-        </div>
-        <div class="form-group">
-            <label for="{{ form.promoted.id_for_label }}">Promoted:</label>
-                {{ form.promoted }}
-        </div>
-        <div class="form-group">
-            <label for="{{ form.adult_places.id_for_label }}">Places available for adults:</label>
-            {{ form.adult_places }}
-            {{ form.adult_places.errors }}
-        </div>
-        <div class="form-group">
-            <label for="{{ form.child_places.id_for_label }}">Places available for children:</label>
-            {{ form.child_places }}
-            {{ form.child_places.errors }}
+        <div class="row">
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.image.id_for_label }}">Image for trip details page:</label>
+                    {{ form.image }}
+                    {{ form.image.errors }}
+                </div>
+            </div>
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.image_small.id_for_label }}">Small image for trip cards:</label>
+                    {{ form.image_small }}
+                    {{ form.image_small.errors }}
+                </div>
+            </div>
         </div>
         <input type="submit" value="Submit" class="btn btn-primary">
     </form>
