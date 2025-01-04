@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Logged out
+{% endblock %}
+
+{% block content %}
+<div class="d-flex d-flex-inline align-items-center justify-content-center">
+    You have been successfully logged out. You can
+    <a class="nav-link" href="{% url 'login' %}">log in</a> again.
+</div>
+{% endblock %}

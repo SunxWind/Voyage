@@ -45,13 +45,8 @@ class CustomLoginView(LoginView):
         return super().dispatch(request, *args, **kwargs)
 
 
-@login_required
 def logout_page(request):
-    return render(request, 'registration/logged_out.html')
-
-
-class CustomLogoutView(LogoutView):
-    success_url = 'logout_page'
+    return render(request, 'registration/loggedout.html')
 
 
 @method_decorator(login_required(login_url='/login'), name='dispatch')
