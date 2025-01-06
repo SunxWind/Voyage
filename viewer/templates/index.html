@@ -1,5 +1,7 @@
+
 {% extends 'base.html' %}
 {% load static %}
+{% load active_link_tags %}
 {% block title %}
     Main page
 {% endblock %}
@@ -80,4 +82,22 @@
 {% else%}
 <p>There are no promoted trips in the database</p>
 {% endif %}
+
+<div class="image-container">
+    <div class="image-continent">
+         <a class="nav-link {% active_link '' strict=True %}" href="{% url 'continent_trips' %}"  >
+              <img src="viewer/static/images/Africa.jpg" alt="africa_image" width="100%" >
+                <div class="title-continent">Africa</div>
+         </a>
+
+    </div>
+    <div class="image-continent">
+        <a href="{% url 'continent_trips' %}?continent= EU " >
+            <img src="viewer/static/images/Europe.jpg" alt="europe_image" width="100%">
+                <div class="title-continent">Europe</div>
+
+     </a>
+</div>
+
+
 {% endblock %}

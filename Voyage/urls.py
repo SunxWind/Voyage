@@ -24,6 +24,8 @@ from viewer.views import (
 from django.contrib.auth import views
 import Voyage.settings as settings
 from django.conf.urls.static import static
+from viewer.views import *
+
 
 
 urlpatterns = [
@@ -40,6 +42,7 @@ urlpatterns = [
     path('accounts', include('django.contrib.auth.urls')),
     path('register', RegisterView.as_view(), name='register'),
     path('profile', ProfileView.as_view(), name='profile'),
+    path('continent/trips', ContinentView.as_view(), name='continent_trips'),
 ]
 
 if settings.DEBUG:  # new

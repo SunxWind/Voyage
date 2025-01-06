@@ -105,3 +105,13 @@ class TripPurchaseForm(TripPurchaseModelForm):
 
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
+
+class ContinentForm(ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields = 'tady bude trip'
+
+
+        for visible in self.visible_fields():
+            visible.field.widget.attrs['class'] = 'form-control'

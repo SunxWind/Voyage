@@ -17,6 +17,7 @@ from django.contrib.auth.mixins import (
 )
 
 
+
 class RegisterView(FormView):
     template_name = 'registration/register.html'
     form_class = SignUpForm
@@ -155,3 +156,25 @@ class TripPurchaseView(FormView):
             amount_child=cleaned_data['amount_child'],
         )
         return result
+
+class ContinentView(TemplateView):
+    template_name = 'continent.html'
+    print("jsem v continent view")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        continent = self.request.GET.get('continent')
+        context['continent'] = continent
+        print(context)
+
+        trips = Trip.objects.filter(promoted=True)
+        promoted_trips = []
+        for trp in (trips):
+            promoted_trips.append(trp)
+
+        context = {
+            'continent_trips': promoted_trips
+        }
+        print(f"{trips}")
+
+        return context

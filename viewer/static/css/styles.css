@@ -23,6 +23,76 @@ h1 {
     opacity: 0.6
 }
 
+.image-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.2em;
+}
+
+.image-container a {
+    display: inline-block;
+}
+
+.image-container .image{
+    box-sizing: border-box;
+}
+
+.image-continent {
+    position: relative;
+    text-align: center;
+}
+.title-continent {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 600%;
+    text-shadow: 0 0 10px black, 0 0 10px black;
+}
+.trips_line {
+    position: relative;
+    display: flex;
+
+    align-items: left;
+    gap: 1em ;
+    background-color: #DBFCFF;
+    padding: 1em;
+    border-bottom: 1px solid gray;
+}
+
+.trips_line_image {
+    width: 270px;
+    height: 180px;
+    object-fit: cover;
+}
+
+.trips_line_text {
+    display: flex;
+    flex-direction: column;
+    height: 180px;
+    width: 600px;
+    line-height: normal;
+    overflow: hidden;
+    padding: 5px;
+}
+
+.btn_trip_buy_line {
+    background-color: #007bff;
+    color: white;
+    font-size: 30;
+    min-width: 40px;
+    padding: 10px;
+    border-radius: 8px;
+    position: absolute;
+    top: 35%;
+    right: 3%;
+
+
+}
+
+
+
 .pad-0 {
     padding: 0px
 }
@@ -34,3 +104,5 @@ h1 {
 .text-dark-dark {
     color: #3F4A86
 }
+
+
