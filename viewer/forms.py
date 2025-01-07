@@ -35,7 +35,7 @@ class SignUpForm(UserCreationForm):
 class TripModelForm(ModelForm):
     class Meta:
         model = Trip
-        fields = '__all__'
+        exclude = ['trip',]
         widgets = {
             'departure_date': DateInput(attrs={'placeholder': 'select date', 'type': 'date'}),
             'return_date': DateInput(attrs={'placeholder': 'select date', 'type': 'date'}),
@@ -46,6 +46,7 @@ class TripModelForm(ModelForm):
     #     initial = self.cleaned_data['description']
     #     sentences = re.sub(r'\s*\.\s*', '.', initial).split('.')
     #     return '. '.join(sentence.capitalize() for sentence in sentences)
+
 
     # def clean(self):
     #     result = super().clean()
@@ -80,6 +81,18 @@ class TripPurchaseModelForm(ModelForm):
              'birth_date': DateInput(attrs={'placeholder': 'select date', 'type': 'date'}),
         }
 
+    # def clean_amount_adult(self):
+    #     initial = self.cleaned_data['amount_adult']
+    #     trip = self.cleaned_data['trip']
+    #     print(f"This is the context data: {trip}")
+        # places = context['adult_places']
+        #
+        # if initial > places:
+        #     self.add_error('amount_adult', '')
+        #     raise ValidationError(
+        #         f"There are only {places} available places for adults. Choose equal or greater amount."
+        #     )
+
     # def clean_description(self):
     #     # Each sentence will start with Uppercase
     #     initial = self.cleaned_data['description']
@@ -88,10 +101,17 @@ class TripPurchaseModelForm(ModelForm):
 
     # def clean(self):
     #     result = super().clean()
-    #     if result['duration'] <= 1:
-    #         self.add_error('duration', '')
+    #
+    #     if result['amount_adult'] > trip.adult_places:
+    #         self.add_error('amount_adult', '')
     #         raise ValidationError(
-    #             "The duration of the stay should be equal to or greater than 1"
+    #             f"There are only {result['adult_places'].adult_places} available places for adults. Choose equal of greater amount."
+    #         )
+    #
+    #     if result['amount_child'] > result['trip'].child_places:
+    #         self.add_error('amount_child', '')
+    #         raise ValidationError(
+    #             f"There are only {result['trip'].child_places} available places for children. Choose equal of greater amount."
     #         )
     #     return result
 

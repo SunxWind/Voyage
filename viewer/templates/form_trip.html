@@ -4,7 +4,7 @@
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {{ form.media.js }}
-        <div class="row">
+        <div class="row pb-4 border-bottom">
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.code.id_for_label }}">Code:</label>
@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row pt-4">
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.where_from.id_for_label }}">Where from:</label>
@@ -35,7 +35,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row pb-4 border-bottom">
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.airport_depart.id_for_label }}">Departure airport:</label>
@@ -51,7 +51,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row pt-4">
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.where_to_hotel.id_for_label }}">Hotel:</label>
@@ -66,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row pb-4 border-bottom">
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.departure_date.id_for_label }}">Departure date:</label>
@@ -89,7 +89,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row pt-4">
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.adult_price.id_for_label }}">Price for adults:</label>
@@ -105,7 +105,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row pb-4 border-bottom">
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.adult_places.id_for_label }}">Places available for adults:</label>
@@ -121,7 +121,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row pt-4 pb-4 border-bottom">
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.image.id_for_label }}">Image for trip details page:</label>
@@ -137,6 +137,8 @@
                 </div>
             </div>
         </div>
-        <input type="submit" value="Submit" class="btn btn-primary">
+        <div class="d-flex justify-content-center pt-4">
+            <input type="submit" value="Submit" class="btn btn-primary" style="width: 100px">
+        </div>
     </form>
 {% endblock %}

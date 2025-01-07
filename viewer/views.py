@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect
 
 from django.views.generic import TemplateView, FormView
 
-from viewer.models import Trip, PurchasedTrip, City, Airport
+from viewer.models import Trip, PurchasedTrip, City, Hotel, Airport
 from viewer.forms import TripForm, TripPurchaseForm, SignUpForm
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -83,8 +83,8 @@ class TripDetailsView(TemplateView):
         context = super().get_context_data(**kwargs)
         trip_id = self.request.GET.get('trip')
         context['trip'] = Trip.objects.get(pk=trip_id)
-        # context['reviews'] = ''  # Review.objects.filter(trip=trip_id)
-        # context['percentage'] = Review.objects.get(pk=trip_id).rating * 10
+        context['trip_type'] = Trip.TYPE_CHOICES[Trip.objects.get(pk=trip_id).type]
+        context['hotel'] = Trip.objects.get(pk=trip_id).where_to_hotel
         return context
 
 
@@ -131,14 +131,8 @@ class TripPurchaseView(FormView):
     form_class = TripPurchaseForm
     success_url = reverse_lazy('index')
 
-    # def __init__(self):
-    #     super().__init__()
-    #     self.trip_id = None
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        trip_id = self.request.GET.get('trip')
-        context['trip'] = Trip.objects.get(pk=trip_id)
         return context
 
     def form_valid(self, form):
@@ -146,12 +140,36 @@ class TripPurchaseView(FormView):
         cleaned_data = form.cleaned_data
         trip_id = self.request.GET.get('trip')
         trip = Trip.objects.get(pk=trip_id)
-        PurchasedTrip.objects.create(
-            trip=trip,
-            firstname=cleaned_data['firstname'],
-            lastname=cleaned_data['lastname'],
-            birth_date=cleaned_data['birth_date'],
-            amount_adult=cleaned_data['amount_adult'],
-            amount_child=cleaned_data['amount_child'],
-        )
+
+        if (trip.adult_places >= form.cleaned_data['amount_adult'] and
+           trip.child_places >= form.cleaned_data['amount_child']):
+            PurchasedTrip.objects.create(
+                trip=trip,
+                firstname=cleaned_data['firstname'],
+                lastname=cleaned_data['lastname'],
+                birth_date=cleaned_data['birth_date'],
+                email=cleaned_data['email'],
+                phone_number=cleaned_data['phone_number'],
+                amount_adult=cleaned_data['amount_adult'],
+                amount_child=cleaned_data['amount_child'],
+            )
+        else:
+            if trip.adult_places < form.cleaned_data['amount_adult']:
+                error_msg = f'There are only {trip.adult_places} places for adults. Input equal or greater number.'
+                form.add_error('amount_adult', error_msg)
+                return self.form_invalid(form, error_msg)
+
+            if trip.child_places < form.cleaned_data['amount_child']:
+                error_msg = f'There are only {trip.child_places} places for children. Input equal or greater number.'
+                form.add_error('amount_child', error_msg)
+                return self.form_invalid(form, error_msg)
         return result
+
+    def form_invalid(self, form, message):
+        messages.error(self.request, message)
+        return super().form_invalid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('/trip_details')
+        return super().dispatch(request, *args, **kwargs)
