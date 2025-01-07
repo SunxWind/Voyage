@@ -92,6 +92,7 @@ class TripCreateView(FormView):
     template_name = 'form_trip.html'
     form_class = TripForm
     success_url = reverse_lazy('trip_add')
+    permission_required = 'viewer.create_trip'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -133,6 +134,8 @@ class TripPurchaseView(FormView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        trip_id = self.request.GET.get('trip')
+        context['trip'] = Trip.objects.get(pk=trip_id)
         return context
 
     def form_valid(self, form):
@@ -153,20 +156,31 @@ class TripPurchaseView(FormView):
                 amount_adult=cleaned_data['amount_adult'],
                 amount_child=cleaned_data['amount_child'],
             )
+            trip.adult_places -= cleaned_data['amount_adult']
+            trip.child_places -= cleaned_data['amount_child']
+            trip.save()
         else:
             if trip.adult_places < form.cleaned_data['amount_adult']:
-                error_msg = f'There are only {trip.adult_places} places for adults. Input equal or greater number.'
+                if trip.adult_places > 0:
+                    error_msg = (f'The amount of places currently available for adults is {trip.adult_places}. '
+                                 f'Input equal or greater number, please.')
+                else:
+                    error_msg = f'Unfortunately, no places are currently available for adults.'
                 form.add_error('amount_adult', error_msg)
-                return self.form_invalid(form, error_msg)
+                return self.form_invalid(form)
 
             if trip.child_places < form.cleaned_data['amount_child']:
-                error_msg = f'There are only {trip.child_places} places for children. Input equal or greater number.'
+                if trip.child_places > 0:
+                    error_msg = (f'The amount of places currently available for children is {trip.child_places}. '
+                                 f'Input equal or greater number, please.')
+                else:
+                    error_msg = f'Unfortunately, no places are currently available for children.'
                 form.add_error('amount_child', error_msg)
-                return self.form_invalid(form, error_msg)
+                return self.form_invalid(form)
         return result
 
-    def form_invalid(self, form, message):
-        messages.error(self.request, message)
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
         return super().form_invalid(form)
 
     def dispatch(self, request, *args, **kwargs):
