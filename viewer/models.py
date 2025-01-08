@@ -126,6 +126,7 @@ class PurchasedTrip(Model):
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True, unique=True)  # Validators should be a list
     amount_adult = IntegerField(default=None, null=False)
     amount_child = IntegerField(default=None, null=False)
+    total_price = DecimalField(max_digits=8, decimal_places=2, default=None, null=False)
 
 
 
