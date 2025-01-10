@@ -10,6 +10,7 @@ from django.utils import timezone
 
 from viewer.models import Hotel, Airport, Trip, PurchasedTrip  # Country
 from django.contrib.auth.forms import UserCreationForm
+import calculation
 
 
 class SignUpForm(UserCreationForm):
@@ -67,7 +68,6 @@ class TripForm(TripModelForm):
         self.fields['child_price'] = FloatField(min_value=0, step_size=1)
         self.fields['adult_places'] = FloatField(min_value=0)
         self.fields['child_places'] = FloatField(min_value=0)
-        # self.fields['departure_date'] = DateField(initial=timezone.now(), required=True)
 
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
@@ -81,40 +81,6 @@ class TripPurchaseModelForm(ModelForm):
              'birth_date': DateInput(attrs={'placeholder': 'select date', 'type': 'date'}),
         }
 
-    # def clean_amount_adult(self):
-    #     initial = self.cleaned_data['amount_adult']
-    #     trip = self.cleaned_data['trip']
-    #     print(f"This is the context data: {trip}")
-        # places = context['adult_places']
-        #
-        # if initial > places:
-        #     self.add_error('amount_adult', '')
-        #     raise ValidationError(
-        #         f"There are only {places} available places for adults. Choose equal or greater amount."
-        #     )
-
-    # def clean_description(self):
-    #     # Each sentence will start with Uppercase
-    #     initial = self.cleaned_data['description']
-    #     sentences = re.sub(r'\s*\.\s*', '.', initial).split('.')
-    #     return '. '.join(sentence.capitalize() for sentence in sentences)
-
-    # def clean(self):
-    #     result = super().clean()
-    #
-    #     if result['amount_adult'] > trip.adult_places:
-    #         self.add_error('amount_adult', '')
-    #         raise ValidationError(
-    #             f"There are only {result['adult_places'].adult_places} available places for adults. Choose equal of greater amount."
-    #         )
-    #
-    #     if result['amount_child'] > result['trip'].child_places:
-    #         self.add_error('amount_child', '')
-    #         raise ValidationError(
-    #             f"There are only {result['trip'].child_places} available places for children. Choose equal of greater amount."
-    #         )
-    #     return result
-
 
 class TripPurchaseForm(TripPurchaseModelForm):
 
@@ -122,6 +88,26 @@ class TripPurchaseForm(TripPurchaseModelForm):
         super().__init__(*args, **kwargs)
         self.fields['amount_adult'] = FloatField(min_value=1)
         self.fields['amount_child'] = FloatField(min_value=0)
+        self.fields['adult_price'] = FloatField()
+        self.fields['child_price'] = FloatField()
+        self.fields['total_price'] = FloatField()
 
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
+        self.fields['total_adult_price'] = FloatField(
+            widget=calculation.FormulaInput('adult_price*amount_adult')
+        )
+        self.fields['total_child_price'] = FloatField(
+            widget=calculation.FormulaInput('child_price*amount_child')
+        )
+        self.fields['total_price'] = FloatField(
+            widget=calculation.FormulaInput('total_adult_price+total_child_price')
+        )
+
+        for field_name in self.fields:
+            if field_name in ['total_adult_price', 'total_child_price', 'total_price']:
+                self.fields[field_name].widget.attrs['readonly'] = 'readonly'
+                self.fields[field_name].widget.attrs['type'] = 'number'
+                self.fields[field_name].widget.attrs['class'] = 'form-control-plaintext'
+                self.fields[field_name].widget.attrs['style'] = 'text-align: right;'
+                self.fields[field_name].initial = '0'
+            else:
+                self.fields[field_name].widget.attrs['class'] = 'form-control'

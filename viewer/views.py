@@ -46,6 +46,7 @@ class CustomLoginView(LoginView):
 
 
 def logout_page(request):
+    print(request)
     return render(request, 'registration/loggedout.html')
 
 
@@ -82,9 +83,10 @@ class TripDetailsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         trip_id = self.request.GET.get('trip')
-        context['trip'] = Trip.objects.get(pk=trip_id)
-        context['trip_type'] = Trip.TYPE_CHOICES[Trip.objects.get(pk=trip_id).type]
-        context['hotel'] = Trip.objects.get(pk=trip_id).where_to_hotel
+        trip = Trip.objects.get(pk=trip_id)
+        context['trip'] = trip
+        context['trip_type'] = Trip.TYPE_CHOICES[trip.type]
+        context['hotel'] = trip.where_to_hotel
         return context
 
 
@@ -135,7 +137,10 @@ class TripPurchaseView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         trip_id = self.request.GET.get('trip')
-        context['trip'] = Trip.objects.get(pk=trip_id)
+        trip = Trip.objects.get(pk=trip_id)
+        context['trip'] = trip
+        context['adult_price'] = trip.adult_price
+        context['child_price'] = trip.child_price
         return context
 
     def form_valid(self, form):
@@ -155,6 +160,7 @@ class TripPurchaseView(FormView):
                 phone_number=cleaned_data['phone_number'],
                 amount_adult=cleaned_data['amount_adult'],
                 amount_child=cleaned_data['amount_child'],
+                total_price=cleaned_data['total_price']
             )
             trip.adult_places -= cleaned_data['amount_adult']
             trip.child_places -= cleaned_data['amount_child']

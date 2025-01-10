@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
-
 {% block content %}
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
+        {{ form.media }}
         <div class="text-warning">
             {{ form.non_field_errors }}
         </div>
@@ -57,6 +57,25 @@
         </div>
         <div class="text-warning">
             {{ form.amount_child.errors }}
+        </div>
+        <input type="hidden" name="adult_price" value="{{ trip.adult_price }}">
+        <input type="hidden" name="child_price" value="{{ trip.child_price }}">
+        <div class="d-flex flex-column justify-content-end">
+            <div class="d-flex flex-row justify-content-end align-items-baseline">
+                <label for="{{ form.total_adult_price.id_for_label }}">Coast for adults:</label>
+                <div style="width: 100px; padding-right: 5px">{{ form.total_adult_price }}</div>
+                <p>CZK</p>
+            </div>
+            <div class="d-flex flex-row justify-content-end align-items-baseline">
+                <label for="{{ form.total_child_price.id_for_label }}">Coast for children:</label>
+                <div style="width: 100px; padding-right: 5px">{{ form.total_child_price }}</div>
+                <p>CZK</p>
+            </div>
+            <div class="d-flex flex-row justify-content-end align-items-baseline">
+                <label for="{{ form.total_price.id_for_label }}">Total coast:</label>
+                <div style="width: 100px; padding-right: 5px">{{ form.total_price }}</div>
+                <p>CZK</p>
+            </div>
         </div>
         <input type="hidden" name="trip_id" value="{{ trip.id }}">
         <input type="submit" value="Purchase" class="btn btn-primary">
