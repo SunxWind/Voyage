@@ -68,7 +68,6 @@ class TripForm(TripModelForm):
         self.fields['child_price'] = FloatField(min_value=0, step_size=1)
         self.fields['adult_places'] = FloatField(min_value=0)
         self.fields['child_places'] = FloatField(min_value=0)
-        # self.fields['departure_date'] = DateField(initial=timezone.now(), required=True)
 
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
@@ -89,9 +88,26 @@ class TripPurchaseForm(TripPurchaseModelForm):
         super().__init__(*args, **kwargs)
         self.fields['amount_adult'] = FloatField(min_value=1)
         self.fields['amount_child'] = FloatField(min_value=0)
+        self.fields['adult_price'] = FloatField()
+        self.fields['child_price'] = FloatField()
+        self.fields['total_price'] = FloatField()
+
+        self.fields['total_adult_price'] = FloatField(
+            widget=calculation.FormulaInput('adult_price*amount_adult')
+        )
+        self.fields['total_child_price'] = FloatField(
+            widget=calculation.FormulaInput('child_price*amount_child')
+        )
         self.fields['total_price'] = FloatField(
-            widget=calculation.FormulaInput('amount_adult')
+            widget=calculation.FormulaInput('total_adult_price+total_child_price')
         )
 
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
+        for field_name in self.fields:
+            if field_name in ['total_adult_price', 'total_child_price', 'total_price']:
+                self.fields[field_name].widget.attrs['readonly'] = 'readonly'
+                self.fields[field_name].widget.attrs['type'] = 'number'
+                self.fields[field_name].widget.attrs['class'] = 'form-control-plaintext'
+                self.fields[field_name].widget.attrs['style'] = 'text-align: right;'
+                self.fields[field_name].initial = '0'
+            else:
+                self.fields[field_name].widget.attrs['class'] = 'form-control'

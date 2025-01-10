@@ -140,6 +140,7 @@ class TripPurchaseView(FormView):
         trip = Trip.objects.get(pk=trip_id)
         context['trip'] = trip
         context['adult_price'] = trip.adult_price
+        context['child_price'] = trip.child_price
         return context
 
     def form_valid(self, form):
