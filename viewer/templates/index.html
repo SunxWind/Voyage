@@ -83,21 +83,77 @@
 <p>There are no promoted trips in the database</p>
 {% endif %}
 
-<div class="image-container">
-    <div class="image-continent">
-         <a class="nav-link {% active_link '' strict=True %}" href="{% url 'continent_trips' %}"  >
-              <img src="viewer/static/images/Africa.jpg" alt="africa_image" width="100%" >
-                <div class="title-continent">Africa</div>
+
+<h5 style="text-align: center; background: white; opacity: 0.6; padding: 0.5em; font-size: 50; color: #3F4A86; font-weight: bold">Explore by continent</h5>
+
+<div class="filter-by-continent" >
+    <div class="continent-image-row">
+         <div class="continent-image-area">
+             <a href="{% url 'continent_trips' %}?continent=Africa" >
+                  <img class="continent-image" src="viewer/static/images/Africa.jpg" alt="africa_image" >
+                    <div class="continent-title">Africa</div>
+
+             </a>
+
+         </div>
+        <div class="continent-image-area">
+            <a href="{% url 'continent_trips' %}?continent=Europe" >
+                <img class="continent-image" src="viewer/static/images/Europe.jpg" alt="europe_image">
+                    <div class="continent-title">Europe</div>
+
          </a>
-
+        </div>
     </div>
-    <div class="image-continent">
-        <a href="{% url 'continent_trips' %}?continent= EU " >
-            <img src="viewer/static/images/Europe.jpg" alt="europe_image" width="100%">
-                <div class="title-continent">Europe</div>
 
-     </a>
+
+
+    <div class="continent-image-row">
+         <div class="continent-image-area">
+             <a href="{% url 'continent_trips' %}?continent=Asia" >
+                  <img class="continent-image" src="viewer/static/images/Asia.jpg" alt="asia_image" >
+                    <div class="continent-title">Asia</div>
+             </a>
+
+        </div>
+        <div class="continent-image-area">
+            <a href="{% url 'continent_trips' %}?continent=North America" >
+                <img class="continent-image" src="viewer/static/images/NorthAmerica.jpg" alt="north_america_image">
+                    <div class="continent-title">North America</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="continent-image-row">
+         <div class="continent-image-area">
+             <a href="{% url 'continent_trips' %}?continent=Australia" >
+                  <img class="continent-image" src="viewer/static/images/Australia.jpg" alt="australia_image" >
+                    <div class="continent-title">Australia</div>
+             </a>
+
+        </div>
+        <div class="continent-image-area">
+            <a href="{% url 'continent_trips' %}?continent=South America" >
+                <img class="continent-image" src="viewer/static/images/SouthAmerica.jpg" alt="south_america_image">
+                    <div class="continent-title">South America</div>
+            </a>
+        </div>
+    </div>
+
+    <div class="continent-image-row">
+         <div class="continent-image-area">
+             <a href="{% url 'continent_trips' %}?continent=Antarctica" >
+                  <img class="continent-image" src="viewer/static/images/Antarctica.jpg" alt="antarctica_image" >
+                    <div class="continent-title">Antarctica</div>
+             </a>
+
+        </div>
+        <div class="continent-image-area">
+            <a href="{% url 'continent_trips' %}?continent=All" >
+                <img class="continent-image" src="viewer/static/images/SeeAll.jpg" alt="All_image">
+                    <div class="continent-title">See All...</div>
+            </a>
+        </div>
+    </div>
 </div>
-
 
 {% endblock %}

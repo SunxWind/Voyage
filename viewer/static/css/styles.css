@@ -23,33 +23,42 @@ h1 {
     opacity: 0.6
 }
 
-.image-container {
+.continent-image-row {
     display: flex;
     justify-content: space-between;
-    padding: 0.2em;
+    gap: 20px;
+    padding: 0.4em;
 }
 
-.image-container a {
-    display: inline-block;
+
+.continent-image-area {
+      position:relative;
+      width: 49%;
+      height: 300px;
+      border: 1px solid white
 }
 
-.image-container .image{
-    box-sizing: border-box;
+
+.continent-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.image-continent {
-    position: relative;
-    text-align: center;
-}
-.title-continent {
+.continent-title {
     position: absolute;
+    text-align: center;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
     color: white;
-    font-size: 600%;
-    text-shadow: 0 0 10px black, 0 0 10px black;
+    font-size: 90;
+    transform: translate(-50%, -50%);
+    text-shadow: black 0px 0 10px;
 }
+
+
+
+
 .trips_line {
     position: relative;
     display: flex;

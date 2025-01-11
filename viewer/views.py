@@ -167,13 +167,17 @@ class ContinentView(TemplateView):
         context['continent'] = continent
         print(context)
 
-        trips = Trip.objects.filter(promoted=True)
-        promoted_trips = []
+        if continent=="All":
+            trips = Trip.objects.filter()
+        else:
+            trips = Trip.objects.filter(where_to_id__continent=continent)
+
+        continent_trips = []
         for trp in (trips):
-            promoted_trips.append(trp)
+            continent_trips.append(trp)
 
         context = {
-            'continent_trips': promoted_trips
+            'continent_trips': continent_trips
         }
         print(f"{trips}")
 
