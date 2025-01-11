@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'viewer',
     'active_link',
     'django_countries',
-    'smart_selects'
+    'smart_selects',
+    'calculation',
 ]
 
 MIDDLEWARE = [

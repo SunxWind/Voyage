@@ -27,12 +27,19 @@
             <h5 class="card-title">Price</h5>
             <p class="card-text">Adults: {{ trip.adult_price }} CZK</p>
             <p class="card-text">Children: {{ trip.child_price }} CZK</p>
+            <h5 class="card-title">Available places</h5>
+            <p class="card-text">For adults: {{ trip.adult_places }}</p>
+            <p class="card-text">For children: {{ trip.child_places }}</p>
             <a href="{% url 'trip_purchase' %}?trip={{ trip.id }}" class="btn btn-primary">Purchase</a>
         </div>
     </div>
     <div class="card-body">
         <h5 class="card-title">About the trip</h5>
         <p class="card-text">{{ trip.description }}</p>
+        <h5 class="card-title">About hotel</h5>
+        <p class="card-text">{{ hotel.description }}</p>
+        <h5 class="card-title">Type of stay</h5>
+        <p class="card-text">{{ trip_type }}</p>
     </div>
 </div>
 {% endblock %}

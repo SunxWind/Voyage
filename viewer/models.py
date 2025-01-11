@@ -2,8 +2,9 @@ from django.db import models
 from django_countries.fields import CountryField
 from django.db.models import (
     DO_NOTHING, CharField, DateField, DateTimeField, ForeignKey, IntegerField, DecimalField,
-    Model, TextField, ImageField, BooleanField, Choices
+    Model, TextField, ImageField, BooleanField, EmailField
 )
+from django.core.validators import RegexValidator
 from smart_selects.db_fields import ChainedForeignKey
 from django.core.validators import MinValueValidator
 
@@ -22,16 +23,16 @@ class City(Model):
     OC = 'Australia & Oceania'
     SA = 'South America'
 
-    CONTINENT_CHOICES = (
-        (None, 'select continent'),
-        (AF, 'Africa'),
-        (AN, 'Antarctica'),
-        (AS, 'Asia'),
-        (EU, 'Europe'),
-        (NA, 'North America'),
-        (OC, 'Australia & Oceania'),
-        (SA, 'South America')
-    )
+    CONTINENT_CHOICES = {
+        None: 'select continent',
+        AF: 'Africa',
+        AN: 'Antarctica',
+        AS: 'Asia',
+        EU: 'Europe',
+        NA: 'North America',
+        OC: 'Australia & Oceania',
+        SA: 'South America',
+    }
 
     name = CharField(max_length=30)
     country = CountryField(blank_label="select country")
@@ -43,7 +44,6 @@ class City(Model):
 
 class Hotel(Model):
     name = CharField(max_length=100)
-    standard = IntegerField(default=None, null=False)
     description = TextField(default=None)
     city = ForeignKey(City, on_delete=DO_NOTHING, default=None)
 
@@ -65,13 +65,13 @@ class Trip(Model):
     FB = 'FB'
     AI = 'AI'
 
-    TYPE_CHOICES = (
-        (None, 'select type of stay'),
-        (BB, 'bed & breakfast'),
-        (HB, 'half board'),
-        (FB, 'full board'),
-        (AI, 'all inclusive'),
-    )
+    TYPE_CHOICES = {
+        None: 'select type of stay',
+        BB: 'bed & breakfast',
+        HB: 'half board',
+        FB: 'full board',
+        AI: 'all inclusive',
+        }
 
     code = CharField(max_length=7)
     where_from = ForeignKey(City, on_delete=DO_NOTHING, related_name="where_from", default=None)
@@ -119,8 +119,14 @@ class PurchasedTrip(Model):
     firstname = CharField(max_length=128)
     lastname = CharField(max_length=128)
     birth_date = DateField(default=None, null=False)
+    email = EmailField(max_length=70, blank=False, unique=True, default="your@email.domain")
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
+                                 message="Phone number must be entered in the format:"
+                                         "'+999999999'. Up to 15 digits allowed.")
+    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True, unique=True)  # Validators should be a list
     amount_adult = IntegerField(default=None, null=False)
     amount_child = IntegerField(default=None, null=False)
+    total_price = DecimalField(max_digits=8, decimal_places=2, default=None, null=False)
 
 
 
