@@ -118,7 +118,7 @@ class TripPurchaseForm(TripPurchaseModelForm):
                 self.fields[field_name].widget.attrs['class'] = 'form-control'
 
 
-  class ContinentForm(ModelForm):
+class ContinentForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

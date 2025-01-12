@@ -72,8 +72,13 @@ class IndexView(TemplateView):
                 promoted_trips.append(cards_block)
                 cards_block = []
 
+        three_trips = promoted_trips[slice(1)]
+
+
+
         context = {
-            'promoted_trips': promoted_trips
+            'promoted_trips': promoted_trips,
+            'three_trips': three_trips
         }
         return context  # render(request, template, context)
 
@@ -201,13 +206,13 @@ class TripPurchaseView(FormView):
 
 class ContinentView(TemplateView):
     template_name = 'continent.html'
-    print("jsem v continent view")
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         continent = self.request.GET.get('continent')
         context['continent'] = continent
-        print(context)
+
 
         if continent=="All":
             trips = Trip.objects.filter()
@@ -221,6 +226,15 @@ class ContinentView(TemplateView):
         context = {
             'continent_trips': continent_trips
         }
-        print(f"{trips}")
+
 
         return context
+
+
+class CountriesListView(TemplateView):
+    template_name = 'countries_list.html'
+
+
+class CountryTripsView(TemplateView):
+    template_name = 'country_trips.html'
+
