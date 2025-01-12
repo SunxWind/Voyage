@@ -3,9 +3,9 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView, UpdateView, DeleteView
 
 from viewer.models import Trip, PurchasedTrip, City, Hotel, Airport
 from viewer.forms import TripForm, TripPurchaseForm, SignUpForm
@@ -13,10 +13,19 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 
 from django.contrib.auth.mixins import (
-  LoginRequiredMixin, PermissionRequiredMixin
+  LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 )
 
 
+
+class StaffRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        return JsonResponse(
+            {'message': 'Only company staff have access to this page'}
+        )
 
 class RegisterView(FormView):
     template_name = 'registration/register.html'
@@ -34,7 +43,7 @@ class RegisterView(FormView):
 
 
 class CustomLoginView(LoginView):
-    template_name ='registration/login.html'
+    template_name = 'registration/login.html'
 
     def form_invalid(self, form):
         messages.error(self.request, "Invalid username or password")
@@ -91,7 +100,7 @@ class TripDetailsView(TemplateView):
         return context
 
 
-class TripCreateView(FormView):
+class TripCreateView(StaffRequiredMixin, FormView):
     template_name = 'form_trip.html'
     form_class = TripForm
     success_url = reverse_lazy('trip_add')
@@ -124,10 +133,23 @@ class TripCreateView(FormView):
         return result
 
     # Redirect to url/trips when the user is not logged in
-    # def dispatch(self, request, *args, **kwargs):
-    #     if not request.user.is_authenticated:
-    #         return redirect('/trips')
-    #     return super().dispatch(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('trips')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class TripView(ListView):
+    template_name = 'trips.html'
+    model = Trip
+
+
+class TripUpdateView(UpdateView):
+    pass
+
+
+class TripDeleteView(DeleteView):
+    pass
 
 
 class TripPurchaseView(FormView):

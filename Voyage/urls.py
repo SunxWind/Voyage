@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 from viewer.views import (
-    IndexView, TripDetailsView, TripCreateView, TripPurchaseView, CustomLoginView, RegisterView, ProfileView, logout_page
+    IndexView, ContinentView, TripView, TripDetailsView, TripCreateView, TripPurchaseView, CustomLoginView, RegisterView, ProfileView, logout_page
 )
 
 from django.contrib.auth import views
@@ -34,7 +34,7 @@ urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('trip/details', TripDetailsView.as_view(), name='trip_details'),
     path('trip_purchase', TripPurchaseView.as_view(), name='trip_purchase'),
-    # path('some_page', SomePageView.as_view(), name='some_page'),
+    path('trips', TripView.as_view(), name='trips'),
     path('trip_add', TripCreateView.as_view(), name='trip_add'),
 
     path('accounts/login', CustomLoginView.as_view(), name='login'),
