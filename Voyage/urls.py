@@ -28,26 +28,27 @@ from django.conf.urls.static import static
 from viewer.views import *
 
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(r'^chaining/', include('smart_selects.urls',)),
+    # re_path(r'^chaining/', include('smart_selects.urls',)),
+    path('', include('smart_selects.urls',)),
     path('', IndexView.as_view(), name='index'),
-    path('trip/details', TripDetailsView.as_view(), name='trip_details'),
-    path('trip_purchase', TripPurchaseView.as_view(), name='trip_purchase'),
 
     path('trips', TripView.as_view(), name='trips'),
+    path('trip/details', TripDetailsView.as_view(), name='trip_details'),
     path('trip_add', TripCreateView.as_view(), name='trip_add'),
+    path('trip_purchase', TripPurchaseView.as_view(), name='trip_purchase'),
     path('trip/update/<pk>', TripUpdateView.as_view(), name='trip_update'),
     path('trip/delete/<pk>', TripDeleteView.as_view(), name='trip_delete'),
+
+    path('continent/trips', ContinentView.as_view(), name='continent_trips'),
 
     path('accounts/login', CustomLoginView.as_view(), name='login'),
     path('logout_page', logout_page, name='logout_page'),
     path('accounts', include('django.contrib.auth.urls')),
     path('register', RegisterView.as_view(), name='register'),
     path('profile', ProfileView.as_view(), name='profile'),
-    path('continent/trips', ContinentView.as_view(), name='continent_trips'),
 ]
 
-if settings.DEBUG:  # new
+if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

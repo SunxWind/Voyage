@@ -121,6 +121,24 @@
                 </div>
             </div>
         </div>
+        <div class="row pt-4">
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.description.id_for_label }}">Description:</label>
+                    {{ form.description }}
+                    {{ form.description.errors }}
+                </div>
+            </div>
+        </div>
+        <div class="row pt-4">
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.short_description.id_for_label }}">Short description:</label>
+                    {{ form.short_description }}
+                    {{ form.short_description.errors }}
+                </div>
+            </div>
+        </div>
         <div class="row pt-4 pb-4 border-bottom">
             <div class="col">
                 <div class="form-group">

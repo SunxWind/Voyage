@@ -87,6 +87,11 @@ class IndexView(TemplateView):
         return context  # render(request, template, context)
 
 
+class TripView(ListView):
+    template_name = 'trips.html'
+    model = Trip
+
+
 class TripDetailsView(TemplateView):
     template_name = "trip_details.html"
 
@@ -111,6 +116,7 @@ class TripCreateView(StaffRequiredMixin, FormView):
         return context
 
     def form_valid(self, form):
+        print("You are in the TripCreateView form_valid method")
         result = super().form_valid(form)
         cleaned_data = form.cleaned_data
         Trip.objects.create(
@@ -129,6 +135,10 @@ class TripCreateView(StaffRequiredMixin, FormView):
             promoted=cleaned_data['promoted'],
             adult_places=cleaned_data['adult_places'],
             child_places=cleaned_data['child_places'],
+            description=cleaned_data['description'],
+            short_description=cleaned_data['short_description'],
+            image=cleaned_data['image'],
+            image_small=cleaned_data['image_small'],
         )
         return result
 
@@ -139,16 +149,42 @@ class TripCreateView(StaffRequiredMixin, FormView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class TripView(ListView):
-    template_name = 'trips.html'
-    model = Trip
-
-
-class TripUpdateView(UpdateView):
+class TripUpdateView(StaffRequiredMixin, UpdateView):
     template_name = 'form_trip.html'
     form_class = TripForm
     model = Trip
     success_url = reverse_lazy('trips')
+
+    def form_valid(self, form):
+        print("You are in the TripUpdateView form_valid method")
+        # result = super().form_valid(form)
+        # cleaned_data = form.cleaned_data
+        # Trip.objects.update(
+        #     code=cleaned_data['code'],
+        #     where_from=cleaned_data['where_from'],
+        #     where_to=cleaned_data['where_to'],
+        #     where_to_hotel=cleaned_data['where_to_hotel'],
+        #     airport_depart=cleaned_data['airport_depart'],
+        #     airport_arrive=cleaned_data['airport_arrive'],
+        #     departure_date=cleaned_data['departure_date'],
+        #     return_date=cleaned_data['return_date'],
+        #     duration=cleaned_data['duration'],
+        #     type=cleaned_data['type'],
+        #     adult_price=cleaned_data['adult_price'],
+        #     child_price=cleaned_data['child_price'],
+        #     promoted=cleaned_data['promoted'],
+        #     adult_places=cleaned_data['adult_places'],
+        #     child_places=cleaned_data['child_places'],
+        # )
+        form.save()
+        print("TripUpdateView has saved the form")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        print("You are in the form_invalid method of the TripUpdateView")
+        messages.error(self.request, form.errors)
+        print(f"These are form errors: {form.errors}")
+        return super().form_invalid(form)
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -156,9 +192,15 @@ class TripUpdateView(UpdateView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class TripDeleteView(DeleteView):
+class TripDeleteView(StaffRequiredMixin, DeleteView):
+    template_name = 'trip_delete_form.html'
     model = Trip
     success_url = reverse_lazy('trips')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('/trips')
+        return super().dispatch(request, *args, **kwargs)
 
 
 class TripPurchaseView(FormView):
@@ -217,8 +259,6 @@ class TripPurchaseView(FormView):
                 return self.form_invalid(form)
         return result
 
-
-
     def form_invalid(self, form):
         messages.error(self.request, form.errors)
         return super().form_invalid(form)
@@ -227,7 +267,6 @@ class TripPurchaseView(FormView):
         if not request.user.is_authenticated:
             return redirect('/trip_details')
         return super().dispatch(request, *args, **kwargs)
-
 
 
 class ContinentView(TemplateView):

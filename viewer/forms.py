@@ -42,28 +42,27 @@ class TripModelForm(ModelForm):
             'return_date': DateInput(attrs={'placeholder': 'select date', 'type': 'date'}),
         }
 
-    # def clean_description(self):
-    #     # Each sentence will start with Uppercase
-    #     initial = self.cleaned_data['description']
-    #     sentences = re.sub(r'\s*\.\s*', '.', initial).split('.')
-    #     return '. '.join(sentence.capitalize() for sentence in sentences)
+    def clean_description(self):
+        # Each sentence will start with Uppercase
+        initial = self.cleaned_data['description']
+        sentences = re.sub(r'\s*\.\s*', '.', initial).split('.')
+        return '. '.join(sentence.capitalize() for sentence in sentences)
 
-
-    # def clean(self):
-    #     result = super().clean()
-    #     if result['duration'] <= 1:
-    #         self.add_error('duration', '')
-    #         raise ValidationError(
-    #             "The duration of the stay should be equal to or greater than 1"
-    #         )
-    #     return result
+    def clean_duration(self):
+        initial = self.cleaned_data['duration']
+        if initial < 1:
+            self.add_error('duration', '')
+            raise ValidationError(
+                "The duration of the stay should be equal to or greater than 1"
+            )
+        return initial
 
 
 class TripForm(TripModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['duration'] = FloatField(min_value=1)
+        self.fields['duration'] = FloatField(min_value=1, step_size=1)
         self.fields['adult_price'] = FloatField(min_value=0, step_size=1)
         self.fields['child_price'] = FloatField(min_value=0, step_size=1)
         self.fields['adult_places'] = FloatField(min_value=0)
@@ -88,10 +87,6 @@ class TripPurchaseForm(TripPurchaseModelForm):
         super().__init__(*args, **kwargs)
         self.fields['amount_adult'] = FloatField(min_value=1)
         self.fields['amount_child'] = FloatField(min_value=0)
-
-
-        for visible in self.visible_fields():
-            visible.field.widget.attrs['class'] = 'form-control'
 
         self.fields['adult_price'] = FloatField()
         self.fields['child_price'] = FloatField()
