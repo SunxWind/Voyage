@@ -117,7 +117,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-LOCALE_PATH = ['C:\\Programming\\PyCourse\\Voyage\\viewer\\locale']
+LOCALE_PATH = ['C:\\Users\\yanah\\PycharmProjects\\Voyage\\viewer\\locale']
 
 LANGUAGES = [
     ('en', 'English'),
@@ -137,7 +137,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-STATICFILES_DIRS = ['C:\\Programming\\PyCourse\\Voyage\\viewer\\static']
+STATICFILES_DIRS = ['C:\\Users\\yanah\\PycharmProjects\\Voyage\\viewer\\static']
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'logout_page'

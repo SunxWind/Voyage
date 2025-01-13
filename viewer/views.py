@@ -145,11 +145,20 @@ class TripView(ListView):
 
 
 class TripUpdateView(UpdateView):
-    pass
+    template_name = 'form_trip.html'
+    form_class = TripForm
+    model = Trip
+    success_url = reverse_lazy('trips')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('trips')
+        return super().dispatch(request, *args, **kwargs)
 
 
 class TripDeleteView(DeleteView):
-    pass
+    model = Trip
+    success_url = reverse_lazy('trips')
 
 
 class TripPurchaseView(FormView):

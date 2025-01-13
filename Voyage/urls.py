@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 from viewer.views import (
-    IndexView, ContinentView, TripView, TripDetailsView, TripCreateView, TripPurchaseView, CustomLoginView, RegisterView, ProfileView, logout_page
+    IndexView, ContinentView, TripView, TripDetailsView, TripCreateView, TripUpdateView, TripDeleteView,
+    TripPurchaseView, CustomLoginView, RegisterView, ProfileView, logout_page
 )
 
 from django.contrib.auth import views
@@ -34,11 +35,14 @@ urlpatterns = [
     path('', IndexView.as_view(), name='index'),
     path('trip/details', TripDetailsView.as_view(), name='trip_details'),
     path('trip_purchase', TripPurchaseView.as_view(), name='trip_purchase'),
+
     path('trips', TripView.as_view(), name='trips'),
     path('trip_add', TripCreateView.as_view(), name='trip_add'),
+    path('trip/update/<pk>', TripUpdateView.as_view(), name='trip_update'),
+    path('trip/delete/<pk>', TripDeleteView.as_view(), name='trip_delete'),
 
     path('accounts/login', CustomLoginView.as_view(), name='login'),
-    path('logout_page', logout_page, name='logout_page'),  # Does not work properly. Redirects to django default logout page, insted of user template loggedout.html.
+    path('logout_page', logout_page, name='logout_page'),
     path('accounts', include('django.contrib.auth.urls')),
     path('register', RegisterView.as_view(), name='register'),
     path('profile', ProfileView.as_view(), name='profile'),

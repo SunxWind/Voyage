@@ -31,8 +31,8 @@
             <td>{{ trip.child_price }}</td>
             {% if trip.promoted == True %} <td>Yes</td> {% else %} <td>No</td> {% endif %}
             {% if user.is_authenticated %}
-            <td><a href="#" class="btn btn-info">Edit</a></td>
-            <td><a href="#" class="btn btn-info">Delete</a></td>
+            <td><a href="{%url 'trip_update' trip.id %}" class="btn btn-info">Edit</a></td>
+            <td><a href="{%url 'trip_delete' trip.id %}" class="btn btn-info">Delete</a></td>
             {% endif %}
         </tr>
         {% endfor %}
