@@ -17,7 +17,6 @@ from django.contrib.auth.mixins import (
 )
 
 
-
 class StaffRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_staff
@@ -26,6 +25,7 @@ class StaffRequiredMixin(UserPassesTestMixin):
         return JsonResponse(
             {'message': 'Only company staff have access to this page'}
         )
+
 
 class RegisterView(FormView):
     template_name = 'registration/register.html'
@@ -56,12 +56,14 @@ class CustomLoginView(LoginView):
 
 
 def logout_page(request):
-    print(request)
     return render(request, 'registration/loggedout.html')
 
 
-@method_decorator(login_required(login_url='/login'), name='dispatch')
-class ProfileView(TemplateView):
+def purchase_approval(request):
+    return render(request, 'purchase_approval.html')
+
+
+class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'profile.html'
 
 
@@ -156,34 +158,11 @@ class TripUpdateView(StaffRequiredMixin, UpdateView):
     success_url = reverse_lazy('trips')
 
     def form_valid(self, form):
-        print("You are in the TripUpdateView form_valid method")
-        # result = super().form_valid(form)
-        # cleaned_data = form.cleaned_data
-        # Trip.objects.update(
-        #     code=cleaned_data['code'],
-        #     where_from=cleaned_data['where_from'],
-        #     where_to=cleaned_data['where_to'],
-        #     where_to_hotel=cleaned_data['where_to_hotel'],
-        #     airport_depart=cleaned_data['airport_depart'],
-        #     airport_arrive=cleaned_data['airport_arrive'],
-        #     departure_date=cleaned_data['departure_date'],
-        #     return_date=cleaned_data['return_date'],
-        #     duration=cleaned_data['duration'],
-        #     type=cleaned_data['type'],
-        #     adult_price=cleaned_data['adult_price'],
-        #     child_price=cleaned_data['child_price'],
-        #     promoted=cleaned_data['promoted'],
-        #     adult_places=cleaned_data['adult_places'],
-        #     child_places=cleaned_data['child_places'],
-        # )
         form.save()
-        print("TripUpdateView has saved the form")
         return super().form_valid(form)
 
     def form_invalid(self, form):
-        print("You are in the form_invalid method of the TripUpdateView")
         messages.error(self.request, form.errors)
-        print(f"These are form errors: {form.errors}")
         return super().form_invalid(form)
 
     def dispatch(self, request, *args, **kwargs):
@@ -203,7 +182,7 @@ class TripDeleteView(StaffRequiredMixin, DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class TripPurchaseView(FormView):
+class TripPurchaseView(LoginRequiredMixin, FormView):
     template_name = "form_trip_purchase.html"
     form_class = TripPurchaseForm
     success_url = reverse_lazy('index')
@@ -265,7 +244,7 @@ class TripPurchaseView(FormView):
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect('/trip_details')
+            return redirect('purchase_approval')
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -279,7 +258,7 @@ class ContinentView(TemplateView):
         context['continent'] = continent
         print(context)
 
-        if continent=="All":
+        if continent == "All":
             trips = Trip.objects.filter()
         else:
             trips = Trip.objects.filter(where_to_id__continent=continent)

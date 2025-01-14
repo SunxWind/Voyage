@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if request.user.is_authenticated %}
+    Purchase approved
+    {% else %}
+    Login or register invite
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="d-flex d-flex-inline align-items-center justify-content-center">
+    {% if request.user.is_authenticated %}
+    You have bought the trip successfully.
+    {% else %}
+    You have to be logged in to purchase a trip. You can
+    <a class="nav-link" href="{% url 'login' %}">log in</a>or
+    <a class="nav-link" href="{% url 'register' %}">register</a>.
+    {% endif %}
+</div>
+{% endblock %}
