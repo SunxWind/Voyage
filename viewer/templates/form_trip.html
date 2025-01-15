@@ -9,6 +9,12 @@
                 <div class="form-group">
                     <label for="{{ form.code.id_for_label }}">Code:</label>
                     {{ form.code }}
+                    <p class="pt-2">Code requirements:</p>
+                    <ul>
+                        <li>the first two letters is the international code of the destination continent,</li>
+                        <li>the second two letters is the international code of the destination country,</li>
+                        <li>the last three digits is the sequential number of the trip to this destination.</li>
+                    </ul>
                     <p class="textcolor: red">{{ form.code.errors }}</p>
                 </div>
             </div>
