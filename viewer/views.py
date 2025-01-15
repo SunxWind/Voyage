@@ -3,9 +3,9 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 
-from django.views.generic import TemplateView, FormView
+from django.views.generic import TemplateView, FormView, ListView, UpdateView, DeleteView
 
 from viewer.models import Trip, PurchasedTrip, City, Hotel, Airport
 from viewer.forms import TripForm, TripPurchaseForm, SignUpForm
@@ -13,9 +13,18 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 
 from django.contrib.auth.mixins import (
-  LoginRequiredMixin, PermissionRequiredMixin
+  LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 )
 
+
+class StaffRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_staff
+
+    def handle_no_permission(self):
+        return JsonResponse(
+            {'message': 'Only company staff have access to this page'}
+        )
 
 
 class RegisterView(FormView):
@@ -34,7 +43,7 @@ class RegisterView(FormView):
 
 
 class CustomLoginView(LoginView):
-    template_name ='registration/login.html'
+    template_name = 'registration/login.html'
 
     def form_invalid(self, form):
         messages.error(self.request, "Invalid username or password")
@@ -47,12 +56,14 @@ class CustomLoginView(LoginView):
 
 
 def logout_page(request):
-    print(request)
     return render(request, 'registration/loggedout.html')
 
 
-@method_decorator(login_required(login_url='/login'), name='dispatch')
-class ProfileView(TemplateView):
+def purchase_approval(request):
+    return render(request, 'purchase_approval.html')
+
+
+class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'profile.html'
 
 
@@ -83,6 +94,11 @@ class IndexView(TemplateView):
         return context  # render(request, template, context)
 
 
+class TripView(ListView):
+    template_name = 'trips.html'
+    model = Trip
+
+
 class TripDetailsView(TemplateView):
     template_name = "trip_details.html"
 
@@ -96,7 +112,7 @@ class TripDetailsView(TemplateView):
         return context
 
 
-class TripCreateView(FormView):
+class TripCreateView(StaffRequiredMixin, FormView):
     template_name = 'form_trip.html'
     form_class = TripForm
     success_url = reverse_lazy('trip_add')
@@ -107,6 +123,7 @@ class TripCreateView(FormView):
         return context
 
     def form_valid(self, form):
+        print("You are in the TripCreateView form_valid method")
         result = super().form_valid(form)
         cleaned_data = form.cleaned_data
         Trip.objects.create(
@@ -125,17 +142,52 @@ class TripCreateView(FormView):
             promoted=cleaned_data['promoted'],
             adult_places=cleaned_data['adult_places'],
             child_places=cleaned_data['child_places'],
+            description=cleaned_data['description'],
+            short_description=cleaned_data['short_description'],
+            image=cleaned_data['image'],
+            image_small=cleaned_data['image_small'],
         )
         return result
 
     # Redirect to url/trips when the user is not logged in
-    # def dispatch(self, request, *args, **kwargs):
-    #     if not request.user.is_authenticated:
-    #         return redirect('/trips')
-    #     return super().dispatch(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('trips')
+        return super().dispatch(request, *args, **kwargs)
 
 
-class TripPurchaseView(FormView):
+class TripUpdateView(StaffRequiredMixin, UpdateView):
+    template_name = 'form_trip.html'
+    form_class = TripForm
+    model = Trip
+    success_url = reverse_lazy('trips')
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
+        return super().form_invalid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('trips')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class TripDeleteView(StaffRequiredMixin, DeleteView):
+    template_name = 'trip_delete_form.html'
+    model = Trip
+    success_url = reverse_lazy('trips')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('/trips')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class TripPurchaseView(LoginRequiredMixin, FormView):
     template_name = "form_trip_purchase.html"
     form_class = TripPurchaseForm
     success_url = reverse_lazy('index')
@@ -191,17 +243,14 @@ class TripPurchaseView(FormView):
                 return self.form_invalid(form)
         return result
 
-
-
     def form_invalid(self, form):
         messages.error(self.request, form.errors)
         return super().form_invalid(form)
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect('/trip_details')
+            return redirect('purchase_approval')
         return super().dispatch(request, *args, **kwargs)
-
 
 
 class ContinentView(TemplateView):
@@ -212,6 +261,7 @@ class ContinentView(TemplateView):
         context = super().get_context_data(**kwargs)
         continent = self.request.GET.get('continent')
         context['continent'] = continent
+
 
 
         if continent=="All":

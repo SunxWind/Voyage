@@ -6,7 +6,7 @@ from django.db.models import (
 )
 from django.core.validators import RegexValidator
 from smart_selects.db_fields import ChainedForeignKey
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MinLengthValidator
 
 # from django.contrib.auth.models import User
 
@@ -73,7 +73,7 @@ class Trip(Model):
         AI: 'all inclusive',
         }
 
-    code = CharField(max_length=7)
+    code = CharField(max_length=7,  validators=[MinLengthValidator(7)])
     where_from = ForeignKey(City, on_delete=DO_NOTHING, related_name="where_from", default=None)
     airport_depart = ChainedForeignKey(
         Airport,

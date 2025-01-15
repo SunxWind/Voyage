@@ -18,7 +18,8 @@ from django.contrib import admin
 from django.urls import path, include
 
 from viewer.views import (
-    IndexView, TripDetailsView, TripCreateView, TripPurchaseView, CustomLoginView, RegisterView, ProfileView, logout_page
+    IndexView, ContinentView, TripView, TripDetailsView, TripCreateView, TripUpdateView, TripDeleteView,
+    TripPurchaseView, CustomLoginView, RegisterView, ProfileView, logout_page, purchase_approval
 )
 
 from django.contrib.auth import views
@@ -27,25 +28,33 @@ from django.conf.urls.static import static
 from viewer.views import *
 
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path(r'^chaining/', include('smart_selects.urls',)),
+    # re_path(r'^chaining/', include('smart_selects.urls',)),
+    path('', include('smart_selects.urls',)),
     path('', IndexView.as_view(), name='index'),
+
+    path('trips', TripView.as_view(), name='trips'),
     path('trip/details', TripDetailsView.as_view(), name='trip_details'),
-    path('trip_purchase', TripPurchaseView.as_view(), name='trip_purchase'),
-    # path('some_page', SomePageView.as_view(), name='some_page'),
     path('trip_add', TripCreateView.as_view(), name='trip_add'),
+    path('trip_purchase', TripPurchaseView.as_view(), name='trip_purchase'),
+    path('purchase_approval', purchase_approval, name='purchase_approval'),
+    path('trip/update/<pk>', TripUpdateView.as_view(), name='trip_update'),
+    path('trip/delete/<pk>', TripDeleteView.as_view(), name='trip_delete'),
+
+    path('continent/trips', ContinentView.as_view(), name='continent_trips'),
 
     path('accounts/login', CustomLoginView.as_view(), name='login'),
-    path('logout_page', logout_page, name='logout_page'),  # Does not work properly. Redirects to django default logout page, insted of user template loggedout.html.
+    path('logout_page', logout_page, name='logout_page'),
     path('accounts', include('django.contrib.auth.urls')),
     path('register', RegisterView.as_view(), name='register'),
     path('profile', ProfileView.as_view(), name='profile'),
+
     path('continent/trips', ContinentView.as_view(), name='continent_trips'),
     path('countries_list', CountriesListView.as_view(), name="countries_list"),
     path('country/trips', CountryTripsView.as_view(), name='country_trips')
+
 ]
 
-if settings.DEBUG:  # new
+if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

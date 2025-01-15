@@ -9,6 +9,12 @@
                 <div class="form-group">
                     <label for="{{ form.code.id_for_label }}">Code:</label>
                     {{ form.code }}
+                    <p class="pt-2">Code requirements:</p>
+                    <ul>
+                        <li>the first two letters is the international code of the destination continent,</li>
+                        <li>the second two letters is the international code of the destination country,</li>
+                        <li>the last three digits is the sequential number of the trip to this destination.</li>
+                    </ul>
                     <p class="textcolor: red">{{ form.code.errors }}</p>
                 </div>
             </div>
@@ -118,6 +124,24 @@
                     <label for="{{ form.child_places.id_for_label }}">Places available for children:</label>
                     {{ form.child_places }}
                     {{ form.child_places.errors }}
+                </div>
+            </div>
+        </div>
+        <div class="row pt-4">
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.description.id_for_label }}">Description:</label>
+                    {{ form.description }}
+                    {{ form.description.errors }}
+                </div>
+            </div>
+        </div>
+        <div class="row pt-4">
+            <div class="col">
+                <div class="form-group">
+                    <label for="{{ form.short_description.id_for_label }}">Short description:</label>
+                    {{ form.short_description }}
+                    {{ form.short_description.errors }}
                 </div>
             </div>
         </div>

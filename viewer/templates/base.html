@@ -39,41 +39,38 @@
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link {% active_link 'index' strict=True %}" href="{% url 'index' %}">
-                        Home
-                    </a>
+                    <a class="nav-link {% active_link 'index' strict=True %}" href="{% url 'index' %}">Home</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        Some Page
-                    </a>
+                <li class="nav-item {% active_link 'trips' strict=True %}">
+                    <a class="nav-link" href="{% url 'trips' %}">Trips</a>
                 </li>
+                {% if request.user.is_staff %}
+                <li class="nav-item {% active_link 'trip_add' strict=True %}">
+                    <a class="nav-link" href="{% url 'trip_add' %}">Add trip</a>
+                </li>
+                {% endif %}
             </ul>
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle {% active_link 'profile' strict=True %}" href="#" id="navbarDropdownMenuLink" role="button"
+                    <a class="nav-link dropdown-toggle {% active_link 'trips' strict=True %}" href="#" id="navbarDropdownMenuLink" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         {{ user.username }}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="{% url 'trip_add' %}">Add trip</a>
+                        <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
                         <form method="post" action="{% url 'logout' %}">
                             {% csrf_token %}
-                            <button type="submit">Logout</button>
+                            <button class="dropdown-item" type="submit">Logout</button>
                         </form>
                     </div>
                 </li>
                 {% else %}
                 <li class="nav-item">
-                    <a class="nav-link {% active_link 'login' strict=True %}" href="{% url 'login' %}">
-                        Login
-                    </a>
+                    <a class="nav-link {% active_link 'login' strict=True %}" href="{% url 'login' %}">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {% active_link 'register' strict=True %}" href="{% url 'register' %}">
-                        Register
-                    </a>
+                    <a class="nav-link {% active_link 'register' strict=True %}" href="{% url 'register' %}">Register</a>
                 </li>
                 {% endif %}
             </ul>
