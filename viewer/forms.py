@@ -205,6 +205,7 @@ class TripPurchaseForm(TripPurchaseModelForm):
         return initial
 
 
+
 class ContinentForm(ModelForm):
 
     def __init__(self, *args, **kwargs):

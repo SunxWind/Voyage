@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Country Trips
+{% endblock %}
+
+{% block content %}
+<div class="trips-table">
+    {% for trip in country_trips %}
+        <div class="trips_line">
+            <img class="trips_line_image" src="{{ trip.image.url }}" alt="image{{ trip.where_to.name }}">
+            <div class="trips_line_text">
+                <h1>{{ trip.where_to.name }}</h1>
+                <p class="trips_line_descrioption">{{ trip.description }} </p>
+            </div>
+                <div class="price_button_area">
+                    <h1 style="font-size: 30; color: black; margin-left: 1.5em;">Price:</h1>
+                    <a href="{% url 'trip_details' %}?trip={{ trip.id }}" >
+                        <btn class="btn_trip_buy_line">{{ trip.adult_price }}</btn>
+                    </a>
+                    <h1 style="font-size: 20; color: black; margin-top: 4.5em; margin-left: 1.8em;">For 1 adult</h1>
+                </div>
+
+        </div>
+    {% endfor %}
+</div>
+
+
+
+{% endblock %}

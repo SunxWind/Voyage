@@ -83,8 +83,13 @@ class IndexView(TemplateView):
                 promoted_trips.append(cards_block)
                 cards_block = []
 
+        three_trips = promoted_trips[slice(1)]
+
+
+
         context = {
-            'promoted_trips': promoted_trips
+            'promoted_trips': promoted_trips,
+            'three_trips': three_trips
         }
         return context  # render(request, template, context)
 
@@ -250,26 +255,63 @@ class TripPurchaseView(LoginRequiredMixin, FormView):
 
 class ContinentView(TemplateView):
     template_name = 'continent.html'
-    print("jsem v continent view")
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         continent = self.request.GET.get('continent')
         context['continent'] = continent
-        print(context)
 
-        if continent == "All":
-            trips = Trip.objects.filter()
+
+
+        if continent=="All":
+            continent_trips = Trip.objects.filter()
         else:
-            trips = Trip.objects.filter(where_to_id__continent=continent)
+            continent_trips = Trip.objects.filter(where_to_id__continent=continent)
 
-        continent_trips = []
-        for trp in (trips):
-            continent_trips.append(trp)
 
         context = {
             'continent_trips': continent_trips
         }
-        print(f"{trips}")
+
 
         return context
+
+
+class CountriesListView(TemplateView):
+    template_name = 'countries_list.html'
+
+    def get_context_data(self, **kwargs):
+        all_trips = Trip.objects.filter()
+        countries_list = []
+        for trip in all_trips:
+            countries_list.append(trip.where_to.country.name)
+
+        countries_set = set(countries_list)
+        countries_list = sorted(list(countries_set))
+
+        print(countries_list)
+        context = {
+            'countries_list': countries_list
+        }
+
+        return context
+     
+
+
+class CountryTripsView(TemplateView):
+    template_name = 'country_trips.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        country = self.request.GET.get('country')
+        context['country'] = country
+
+
+        country_trips = Trip.objects.filter(where_to_id__country__name = country)
+        context = {
+            'country_trips' : country_trips
+        }
+
+        return context
+

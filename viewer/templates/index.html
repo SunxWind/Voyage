@@ -84,13 +84,31 @@
 {% endif %}
 
 
+<h5 style="text-align: center; background: white; opacity: 0.6; padding: 0.5em; font-size: 50; color: #3F4A86; font-weight: bold">Explore by country</h5>
+<div class="filter-by-country">
+    <img class="globe-image" src="viewer/static/images/Globe.jpg" alt="globe_image" >
+    <div class="country-name-container">
+        {% for trips in three_trips %}
+            {% for trip in trips %}
+                <a class='country-name-link' href="{% url 'country_trips' %}?country={{trip.where_to.country.name}}" >
+                    <div class="country-name">{{ trip.where_to.country.name }}</div>
+                </a>
+            {% endfor %}
+        {% endfor %}
+        <a class="see-more-link" href="{% url 'countries_list' %}" >
+            <div class="see-more">See more ...</div>
+        </a>
+    </div>
+</div>
+
+
 <h5 style="text-align: center; background: white; opacity: 0.6; padding: 0.5em; font-size: 50; color: #3F4A86; font-weight: bold">Explore by continent</h5>
 
 <div class="filter-by-continent" >
     <div class="continent-image-row">
          <div class="continent-image-area">
              <a href="{% url 'continent_trips' %}?continent=Africa" >
-                  <img class="continent-image" src="viewer/static/images/Africa.jpg" alt="africa_image" >
+                  <img class="continent-image" src="viewer/static/images/Africa.jpg" alt="africa_image">
                     <div class="continent-title">Africa</div>
 
              </a>
@@ -139,7 +157,7 @@
         </div>
     </div>
 
-    <div class="continent-image-row">
+    <div class="continent-image-row" style="margin-bottom: 0.7em">
          <div class="continent-image-area">
              <a href="{% url 'continent_trips' %}?continent=Antarctica" >
                   <img class="continent-image" src="viewer/static/images/Antarctica.jpg" alt="antarctica_image" >
@@ -155,5 +173,6 @@
         </div>
     </div>
 </div>
+
 
 {% endblock %}

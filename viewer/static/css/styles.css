@@ -23,6 +23,44 @@ h1 {
     opacity: 0.6
 }
 
+.filter-by-country {
+    position: relative;
+    background: pink;
+    display: flex;
+    height: 200px;
+    border: 1px solid white;
+    margin-bottom: 3em;
+}
+
+
+.globe-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.country-name-container {
+    padding: 0.7em;
+    position: absolute;
+    width: 100%;
+    top: 25%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+    font-size: 35;
+    text-shadow: black 0px 0 10px;
+}
+
+.see-more-link {
+    color: white;
+}
+
+.country-name-link {
+    color: white;
+}
+
 .continent-image-row {
     display: flex;
     justify-content: space-between;
@@ -30,14 +68,12 @@ h1 {
     padding: 0.4em;
 }
 
-
 .continent-image-area {
       position:relative;
       width: 49%;
       height: 300px;
       border: 1px solid white
 }
-
 
 .continent-image {
     width: 100%;
@@ -57,12 +93,20 @@ h1 {
 }
 
 
+.countries-list-columns {
+    width: 100%;
+    column-count: 3;
+    margin-left: 0.5em;
 
+}
+
+.country-list-link {
+    color: white;
+}
 
 .trips_line {
     position: relative;
     display: flex;
-
     align-items: left;
     gap: 1em ;
     background-color: #DBFCFF;
@@ -96,11 +140,7 @@ h1 {
     position: absolute;
     top: 35%;
     right: 3%;
-
-
 }
-
-
 
 .pad-0 {
     padding: 0px

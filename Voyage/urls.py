@@ -49,6 +49,11 @@ urlpatterns = [
     path('accounts', include('django.contrib.auth.urls')),
     path('register', RegisterView.as_view(), name='register'),
     path('profile', ProfileView.as_view(), name='profile'),
+
+    path('continent/trips', ContinentView.as_view(), name='continent_trips'),
+    path('countries_list', CountriesListView.as_view(), name="countries_list"),
+    path('country/trips', CountryTripsView.as_view(), name='country_trips')
+
 ]
 
 if settings.DEBUG:
