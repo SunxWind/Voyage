@@ -90,7 +90,7 @@
     <div class="country-name-container">
         {% for trips in three_trips %}
             {% for trip in trips %}
-                <a class='country-name-link' href="{% url 'country_trips' %}?country={{trip.where_to.country}}" >
+                <a class='country-name-link' href="{% url 'country_trips' %}?country={{trip.where_to.country.name}}" >
                     <div class="country-name">{{ trip.where_to.country.name }}</div>
                 </a>
             {% endfor %}

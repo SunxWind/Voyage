@@ -5,6 +5,14 @@
 {% endblock %}
 
 {% block content %}
+    <div class="countries-list-columns">
+        {% for country in countries_list %}
+
+            <a class='country-list-link' href="{% url 'country_trips' %}?country={{country}}">
+                <h2>{{country}}</h2>
+            </a>
+        {% endfor %}
+    </div>
 
 
 
