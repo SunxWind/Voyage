@@ -72,8 +72,7 @@ class IndexView(TemplateView):
     template_name = "index.html"
     model = Trip
 
-    def get_context_data(self, **kwargs):  # filter(self, request):
-        # template = 'index.html'
+    def get_context_data(self, **kwargs):
         trips = Trip.objects.filter(promoted=True)
         promoted_trips = []
         cards_block = []
@@ -85,13 +84,11 @@ class IndexView(TemplateView):
 
         three_trips = promoted_trips[slice(1)]
 
-
-
         context = {
             'promoted_trips': promoted_trips,
             'three_trips': three_trips
         }
-        return context  # render(request, template, context)
+        return context
 
 
 class TripView(ListView):
@@ -147,6 +144,13 @@ class TripCreateView(StaffRequiredMixin, FormView):
             image=cleaned_data['image'],
             image_small=cleaned_data['image_small'],
         )
+        return result
+
+    def form_invalid(self, form):
+        result = super().form_invalid(form)
+        for field in form.errors:
+            if field != '__all__':
+                form[field].field.widget.attrs['class'] += ' alert-danger'
         return result
 
     # Redirect to url/trips when the user is not logged in
@@ -256,24 +260,19 @@ class TripPurchaseView(LoginRequiredMixin, FormView):
 class ContinentView(TemplateView):
     template_name = 'continent.html'
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         continent = self.request.GET.get('continent')
         context['continent'] = continent
 
-
-
-        if continent=="All":
+        if continent == "All":
             continent_trips = Trip.objects.filter()
         else:
             continent_trips = Trip.objects.filter(where_to_id__continent=continent)
 
-
         context = {
             'continent_trips': continent_trips
         }
-
 
         return context
 
@@ -296,7 +295,6 @@ class CountriesListView(TemplateView):
         }
 
         return context
-     
 
 
 class CountryTripsView(TemplateView):
@@ -307,10 +305,9 @@ class CountryTripsView(TemplateView):
         country = self.request.GET.get('country')
         context['country'] = country
 
-
-        country_trips = Trip.objects.filter(where_to_id__country__name = country)
+        country_trips = Trip.objects.filter(where_to_id__country__name=country)
         context = {
-            'country_trips' : country_trips
+            'country_trips': country_trips
         }
 
         return context

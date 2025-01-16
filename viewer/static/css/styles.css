@@ -154,7 +154,13 @@ h1 {
     color: #3F4A86
 }
 
+.warning-text {
+    color: #721c24
+}
 
+.vert-align {
+    vertical-align: baseline;
+}
 
 
 input::-webkit-outer-spin-button,

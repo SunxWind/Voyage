@@ -17,15 +17,6 @@ class SignUpForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         fields = ['username', 'first_name', 'last_name', 'email']
-        """
-        widgets = {
-            'username': TextInput(attrs={'class': 'form-control'}),
-            'first_name': TextInput(attrs={'class': 'form-control'}),
-            'last_name': TextInput(attrs={'class': 'form-control'}),
-            'email': EmailInput(attrs={'class': 'form-control'}),
-            'password': PasswordInput(attrs={'class': 'form-control'}),
-        }
-        """
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -73,17 +64,41 @@ class TripModelForm(ModelForm):
         return initial
 
     def clean_return_date(self):
+        cleaned_data = super().clean()
         initial = self.cleaned_data['return_date']
+
         print(f"Initial = '{initial}'")
         if initial and initial < datetime.date.today():
             raise ValidationError("It is not possible to set the return date in the past.")
+
+        initial_departure_date = cleaned_data.get('departure_date')
+        initial_return_date = cleaned_data.get('return_date')
+        if initial_return_date and initial_departure_date and initial_return_date < initial_departure_date:
+            raise ValidationError("Return date can not be earlier than the departure date.")
+
         return initial
 
     def clean_duration(self):
+        cleaned_data = super().clean()
         initial = self.cleaned_data['duration']
+
         if initial and initial < 1:
             raise ValidationError(
                 "The duration of the stay should be equal to or greater than 1."
+            )
+
+        initial_departure_date = cleaned_data.get('departure_date')
+        initial_return_date = cleaned_data.get('return_date')
+
+        initial_duration = cleaned_data.get('duration')
+        trip_duration = None
+
+        if initial_return_date and initial_departure_date:
+            trip_duration = initial_return_date - initial_departure_date
+
+        if initial_duration and trip_duration and initial_duration > trip_duration.days:
+            raise ValidationError(
+                "The duration of the stay can not be longer than the period between the departure and the return dates."
             )
         return initial
 
@@ -98,28 +113,6 @@ class TripModelForm(ModelForm):
         initial = self.cleaned_data['description_short']
         sentences = re.sub(r'\s*\.\s*', '.', initial).split('.')
         return '. '.join(sentence.capitalize() for sentence in sentences)
-
-    def clean(self):
-        cleaned_data = super().clean()
-
-        initial_departure_date = cleaned_data.get('departure_date')
-        initial_return_date = cleaned_data.get('return_date')
-        if initial_return_date and initial_departure_date and initial_return_date < initial_departure_date:
-            self.add_error('return_date', "Return date can not be earlier than the departure date.")
-            raise ValidationError("Return date can not be earlier than the departure date.")
-
-        initial_duration = cleaned_data.get('duration')
-        trip_duration = None
-        if initial_return_date and initial_departure_date:
-            trip_duration = initial_return_date - initial_departure_date
-
-        if initial_duration and trip_duration and initial_duration > trip_duration.days:
-            self.add_error('duration', "The duration of the stay can not be longer than the period between"
-                                       "the departure and the return dates.")
-            raise ValidationError(
-                "The duration of the stay can not be longer than the period between the departure and the return dates."
-            )
-        return cleaned_data
 
 
 class TripForm(TripModelForm):
@@ -203,7 +196,6 @@ class TripPurchaseForm(TripPurchaseModelForm):
         if initial > datetime.date.today():
             raise ValidationError("It is possible to set the date of birth in the past only.")
         return initial
-
 
 
 class ContinentForm(ModelForm):

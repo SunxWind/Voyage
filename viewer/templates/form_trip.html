@@ -9,13 +9,13 @@
                 <div class="form-group">
                     <label for="{{ form.code.id_for_label }}">Code:</label>
                     {{ form.code }}
-                    <p class="pt-2">Code requirements:</p>
+                    <p>Code requirements:</p>
                     <ul>
                         <li>the first two letters is the international code of the destination continent,</li>
                         <li>the second two letters is the international code of the destination country,</li>
                         <li>the last three digits is the sequential number of the trip to this destination.</li>
                     </ul>
-                    <p class="textcolor: red">{{ form.code.errors }}</p>
+                    <p class="warning-text pt-2">{{ form.code.errors.as_text }}</p>
                 </div>
             </div>
             <div class="col">
@@ -30,14 +30,14 @@
                 <div class="form-group">
                     <label for="{{ form.where_from.id_for_label }}">Where from:</label>
                     {{ form.where_from }}
-                    {{ form.where_from.errors }}
+                    <p class="warning-text pt-2">{{ form.where_from.errors.as_text }}</p>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.where_to.id_for_label }}">Where to:</label>
                     {{ form.where_to }}
-                    {{ form.where_to.errors }}
+                    <p class="warning-text pt-2">{{ form.where_to.errors.as_text }}</p>
                 </div>
             </div>
         </div>
@@ -46,14 +46,14 @@
                 <div class="form-group">
                     <label for="{{ form.airport_depart.id_for_label }}">Departure airport:</label>
                     {{ form.airport_depart }}
-                    {{ form.airport_depart.errors }}
+                    <p class="warning-text pt-2">{{ form.airport_depart.errors.as_text }}</p>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.airport_arrive.id_for_label }}">Arrival airport:</label>
                     {{ form.airport_arrive }}
-                    {{ form.airport_arrive.errors }}
+                    <p class="warning-text pt-2">{{ form.airport_arrive.errors.as_text }}</p>
                 </div>
             </div>
         </div>
@@ -62,13 +62,14 @@
                 <div class="form-group">
                     <label for="{{ form.where_to_hotel.id_for_label }}">Hotel:</label>
                     {{ form.where_to_hotel }}
-                    {{ form.where_to_hotel.errors }}
+                   <p class="warning-text pt-2">{{ form.where_to_hotel.errors.as_text }}</p>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.type.id_for_label }}">Type:</label>
                     {{ form.type }}
+                    <p class="warning-text pt-2">{{ form.type.errors.as_text }}</p>
                 </div>
             </div>
         </div>
@@ -77,21 +78,21 @@
                 <div class="form-group">
                     <label for="{{ form.departure_date.id_for_label }}">Departure date:</label>
                     {{ form.departure_date }}
-                    {{ form.departure_date.errors }}
+                    <p class="warning-text pt-2">{{ form.departure_date.errors.as_text }}</p>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.return_date.id_for_label }}">Return date:</label>
                     {{ form.return_date }}
-                    {{ form.return_date.errors }}
+                    <p class="warning-text pt-2">{{ form.return_date.errors.as_text }}</p>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.duration.id_for_label }}">Duration:</label>
                     {{ form.duration }}
-                    <p class="text-red">{{ form.duration.errors }}</p>
+                    <p class="warning-text pt-2">{{ form.duration.errors.as_text }}</p>
                 </div>
             </div>
         </div>
@@ -100,14 +101,14 @@
                 <div class="form-group">
                     <label for="{{ form.adult_price.id_for_label }}">Price for adults:</label>
                     {{ form.adult_price }}
-                    {{ form.adult_price.errors }}
+                    <p class="warning-text pt-2">{{ form.adult_price.errors.as_text }}</p>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.child_price.id_for_label }}">Price for children:</label>
                     {{ form.child_price }}
-                    {{ form.child_price.errors }}
+                    <p class="warning-text pt-2">{{ form.child_price.errors.as_text }}</p>
                 </div>
             </div>
         </div>
@@ -116,14 +117,14 @@
                 <div class="form-group">
                     <label for="{{ form.adult_places.id_for_label }}">Places available for adults:</label>
                     {{ form.adult_places }}
-                    {{ form.adult_places.errors }}
+                    <p class="warning-text pt-2">{{ form.adult_places.errors.as_text }}</p>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.child_places.id_for_label }}">Places available for children:</label>
                     {{ form.child_places }}
-                    {{ form.child_places.errors }}
+                    <p class="warning-text pt-2">{{ form.child_places.errors.as_text }}</p>
                 </div>
             </div>
         </div>
@@ -132,7 +133,7 @@
                 <div class="form-group">
                     <label for="{{ form.description.id_for_label }}">Description:</label>
                     {{ form.description }}
-                    {{ form.description.errors }}
+                    <p class="warning-text pt-2">{{ form.description.errors.as_text }}</p>
                 </div>
             </div>
         </div>
@@ -141,7 +142,7 @@
                 <div class="form-group">
                     <label for="{{ form.short_description.id_for_label }}">Short description:</label>
                     {{ form.short_description }}
-                    {{ form.short_description.errors }}
+                    <p class="warning-text pt-2">{{ form.short_description.errors.as_text }}</p>
                 </div>
             </div>
         </div>
@@ -150,14 +151,14 @@
                 <div class="form-group">
                     <label for="{{ form.image.id_for_label }}">Image for trip details page:</label>
                     {{ form.image }}
-                    {{ form.image.errors }}
+                    <p class="warning-text pt-2">{{ form.image.errors.as_text }}</p>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.image_small.id_for_label }}">Small image for trip cards:</label>
                     {{ form.image_small }}
-                    {{ form.image_small.errors }}
+                    <p class="warning-text pt-2">{{ form.image_small.errors.as_text }}</p>
                 </div>
             </div>
         </div>
