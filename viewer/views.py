@@ -249,6 +249,9 @@ class TripPurchaseView(LoginRequiredMixin, FormView):
 
     def form_invalid(self, form):
         messages.error(self.request, form.errors)
+        for field in form.errors:
+            if field != '__all__':
+                form[field].field.widget.attrs['class'] += ' alert-danger'
         return super().form_invalid(form)
 
     def dispatch(self, request, *args, **kwargs):

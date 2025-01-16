@@ -5,6 +5,7 @@
         {% csrf_token %}
         {{ form.media.js }}
         <div class="row pb-4 border-bottom">
+            <p class="warning-text pt-2">{{ form.non_field_errors.as_text }}</p>
             <div class="col">
                 <div class="form-group">
                     <label for="{{ form.code.id_for_label }}">Code:</label>
