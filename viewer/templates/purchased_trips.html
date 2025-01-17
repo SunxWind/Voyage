@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% if request.user.is_staff %}
+        <table class="table table-striped table-hover text-white">
+            <tr>
+                <th>Code</th>
+                <th>Where to</th>
+                <th>Hotel</th>
+                <th>Where from</th>
+                <th>Departure date</th>
+                <th>Return date</th>
+                <th>Type</th>
+                <th>Price for adults</th>
+                <th>Price for children</th>
+                <th>Promoted</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            {% for purchased_trip in object_list %}
+            <tr>
+                <td>{{ purchased_trip.trip.code }}</td>
+                <td>
+                    <a href="{% url 'trip_details' %}?trip={{ purchased_trip.trip.pk }}">
+                    {{ purchased_trip.trip.where_to }}
+                    </a>
+                </td>
+                <td>{{ purchased_trip.trip.where_to_hotel.name }}</td>
+                <td>{{ purchased_trip.trip.where_from.name }}</td>
+                <td>{{ purchased_trip.trip.departure_date|date:'d.m.y' }}</td>
+                <td>{{ purchased_trip.trip.return_date|date:'d.m.y' }}</td>
+                <td>{{ purchased_trip.trip.type }}</td>
+                <td>{{ purchased_trip.trip.adult_price }}</td>
+                <td>{{ purchased_trip.trip.child_price }}</td>
+                {% if purchased_trip.trip.promoted == True %} <td>Yes</td> {% else %} <td>No</td> {% endif %}
+                <td><a href="{%url 'purchased_trip_update' purchased_trip.id %}" class="btn btn-info">Edit</a></td>
+                <td><a href="{%url 'purchased_trip_delete' purchased_trip.id %}" class="btn btn-info">Delete</a></td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% if not object_list %}<p>No purchased trips in database</p>{% endif %}
+    {% endif %}
+
+{% endblock %}

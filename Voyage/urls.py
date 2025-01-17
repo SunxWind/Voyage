@@ -19,7 +19,8 @@ from django.urls import path, include
 
 from viewer.views import (
     IndexView, ContinentView, TripView, TripDetailsView, TripCreateView, TripUpdateView, TripDeleteView,
-    TripPurchaseView, CustomLoginView, RegisterView, ProfileView, logout_page, purchase_approval
+    TripPurchaseView, PurchasedTripsView, PurchasedTripUpdateView, PurchasedTripDeleteView, CustomLoginView,
+    RegisterView, ProfileView, logout_page, purchase_approval, CountriesListView, CountryTripsView
 )
 
 from django.contrib.auth import views
@@ -37,10 +38,14 @@ urlpatterns = [
     path('trips', TripView.as_view(), name='trips'),
     path('trip/details', TripDetailsView.as_view(), name='trip_details'),
     path('trip_add', TripCreateView.as_view(), name='trip_add'),
-    path('trip_purchase', TripPurchaseView.as_view(), name='trip_purchase'),
-    path('purchase_approval', purchase_approval, name='purchase_approval'),
     path('trip/update/<pk>', TripUpdateView.as_view(), name='trip_update'),
     path('trip/delete/<pk>', TripDeleteView.as_view(), name='trip_delete'),
+
+    path('trip_purchase', TripPurchaseView.as_view(), name='trip_purchase'),
+    path('purchased_trips', PurchasedTripsView.as_view(), name='purchased_trips'),
+    path('purchase_approval', purchase_approval, name='purchase_approval'),
+    path('purchased_trip/update/<pk>', PurchasedTripUpdateView.as_view(), name='purchased_trip_update'),
+    path('purchased_trip/delete/<pk>', PurchasedTripDeleteView.as_view(), name='purchased_trip_delete'),
 
     path('continent/trips', ContinentView.as_view(), name='continent_trips'),
 

@@ -95,6 +95,11 @@ class TripView(ListView):
     template_name = 'trips.html'
     model = Trip
 
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return redirect('index')
+        return super().dispatch(request, *args, **kwargs)
+
 
 class TripDetailsView(TemplateView):
     template_name = "trip_details.html"
@@ -191,6 +196,16 @@ class TripDeleteView(StaffRequiredMixin, DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
 
+class PurchasedTripsView(ListView):
+    template_name = 'purchased_trips.html'
+    model = PurchasedTrip
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return redirect('index')
+        return super().dispatch(request, *args, **kwargs)
+
+
 class TripPurchaseView(LoginRequiredMixin, FormView):
     template_name = "form_trip_purchase.html"
     form_class = TripPurchaseForm
@@ -257,6 +272,44 @@ class TripPurchaseView(LoginRequiredMixin, FormView):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('purchase_approval')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class PurchasedTripUpdateView(StaffRequiredMixin, UpdateView):
+    template_name = 'form_trip_purchase.html'
+    form_class = TripPurchaseForm
+    model = PurchasedTrip
+    success_url = reverse_lazy('purchased_trips')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['trip'] = context['object'].trip
+        context['adult_price'] = context['object'].trip.adult_price
+        context['child_price'] = context['object'].trip.child_price
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, form.errors)
+        return super().form_invalid(form)
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return redirect('index')
+        return super().dispatch(request, *args, **kwargs)
+
+
+class PurchasedTripDeleteView(StaffRequiredMixin, DeleteView):
+    template_name = 'purchased_trip_delete_form.html'
+    model = PurchasedTrip
+    success_url = reverse_lazy('purchased_trips')
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return redirect('/purchased_trips')
         return super().dispatch(request, *args, **kwargs)
 
 

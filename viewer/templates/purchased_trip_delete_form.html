@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<form method="post">{% csrf_token %}
+    <p>Are you sure you want to delete purchased trip to "{{ object.trip.where_to }}"?</p>
+    <input class="btn btn-info" type="submit" value="Delete">
+    <a class="btn btn-info" href="{% url 'purchased_trips' %}">Cansel</a>
+</form>
+
+{% endblock %}

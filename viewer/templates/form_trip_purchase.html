@@ -63,22 +63,24 @@
         <div class="row d-flex flex-column justify-content-end pt-4 border-bottom">
             <input type="hidden" name="adult_price" value="{{ trip.adult_price }}">
             <input type="hidden" name="child_price" value="{{ trip.child_price }}">
-            <div class="d-flex flex-row justify-content-end align-items-baseline">
-                <label for="{{ form.total_adult_price.id_for_label }}">Coast for adults:</label>
-                <div style="width: 100px; padding-right: 5px">{{ form.total_adult_price }}</div>
-                <p>CZK</p>
+            <div class="col">
+                <div class="d-flex flex-row justify-content-end align-items-baseline">
+                    <label for="{{ form.total_adult_price.id_for_label }}">Coast for adults:</label>
+                    <div style="width: 100px; padding-right: 5px">{{ form.total_adult_price }}</div>
+                    <p>CZK</p>
+                </div>
+                <div class="d-flex flex-row justify-content-end align-items-baseline">
+                    <label for="{{ form.total_child_price.id_for_label }}">Coast for children:</label>
+                    <div style="width: 100px; padding-right: 5px">{{ form.total_child_price }}</div>
+                    <p>CZK</p>
+                </div>
+                <div class="d-flex flex-row justify-content-end align-items-baseline">
+                    <label for="{{ form.total_price.id_for_label }}">Total coast:</label>
+                    <div style="width: 100px; padding-right: 5px">{{ form.total_price }}</div>
+                    <p>CZK</p>
+                </div>
+                <input type="hidden" name="trip_id" value="{{ trip.id }}">
             </div>
-            <div class="d-flex flex-row justify-content-end align-items-baseline">
-                <label for="{{ form.total_child_price.id_for_label }}">Coast for children:</label>
-                <div style="width: 100px; padding-right: 5px">{{ form.total_child_price }}</div>
-                <p>CZK</p>
-            </div>
-            <div class="d-flex flex-row justify-content-end align-items-baseline">
-                <label for="{{ form.total_price.id_for_label }}">Total coast:</label>
-                <div style="width: 100px; padding-right: 5px">{{ form.total_price }}</div>
-                <p>CZK</p>
-            </div>
-            <input type="hidden" name="trip_id" value="{{ trip.id }}">
         </div>
         <div class="d-flex justify-content-center pt-4">
             <input type="submit" value="Purchase" class="btn btn-primary">

@@ -180,7 +180,7 @@ class TripPurchaseForm(TripPurchaseModelForm):
             print(f"result  = '{result}'")
         return result
 
-    def clean_last_name(self):
+    def clean_lastname(self):
         """ Corrects the lastname so as it begins with capital letter. """
         initial = self.cleaned_data['lastname']
         print(f"Initial = '{initial}'")
