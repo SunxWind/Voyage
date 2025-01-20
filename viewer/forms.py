@@ -199,7 +199,6 @@ class TripPurchaseForm(TripPurchaseModelForm):
 
 
 class ContinentForm(ModelForm):
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields = 'tady bude trip'

@@ -314,7 +314,7 @@ class PurchasedTripDeleteView(StaffRequiredMixin, DeleteView):
 
 
 class ContinentView(TemplateView):
-    template_name = 'continent.html'
+    template_name = 'filtered_trips.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -322,12 +322,12 @@ class ContinentView(TemplateView):
         context['continent'] = continent
 
         if continent == "All":
-            continent_trips = Trip.objects.filter()
+            filtered_trips = Trip.objects.filter()
         else:
-            continent_trips = Trip.objects.filter(where_to_id__continent=continent)
+            filtered_trips = Trip.objects.filter(where_to_id__continent=continent)
 
         context = {
-            'continent_trips': continent_trips
+            'filtered_trips': filtered_trips
         }
 
         return context
@@ -354,16 +354,16 @@ class CountriesListView(TemplateView):
 
 
 class CountryTripsView(TemplateView):
-    template_name = 'country_trips.html'
+    template_name = 'filtered_trips.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         country = self.request.GET.get('country')
         context['country'] = country
 
-        country_trips = Trip.objects.filter(where_to_id__country__name=country)
+        filtered_trips = Trip.objects.filter(where_to_id__country__name=country)
         context = {
-            'country_trips': country_trips
+            'filtered_trips': filtered_trips
         }
 
         return context

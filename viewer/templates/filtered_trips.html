@@ -1,13 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block title %}
-    Continent Trips
+    Country Trips
 {% endblock %}
 
 {% block content %}
-
 <div class="trips-table">
-    {% for trip in continent_trips %}
+    {% for trip in filtered_trips %}
         <div class="trips_line">
             <img class="trips_line_image" src="{{ trip.image.url }}" alt="image{{ trip.where_to.name }}">
             <div class="trips_line_text">
@@ -28,4 +27,4 @@
 
 
 
-    {% endblock %}
+{% endblock %}
