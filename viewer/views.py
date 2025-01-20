@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, JsonResponse
 
 from django.views.generic import TemplateView, FormView, ListView, UpdateView, DeleteView
+from datetime import datetime, timedelta
 
 from viewer.models import Trip, PurchasedTrip, City, Hotel, Airport
 from viewer.forms import TripForm, TripPurchaseForm, SignUpForm
@@ -84,11 +85,19 @@ class IndexView(TemplateView):
 
         three_trips = promoted_trips[slice(1)]
 
+        upcoming_cutof_date = datetime.now().date() + timedelta(days=30)
+        upcoming_trips = Trip.objects.filter(departure_date__lte=upcoming_cutof_date)
+
+        print(upcoming_trips)
+
         context = {
             'promoted_trips': promoted_trips,
-            'three_trips': three_trips
+            'three_trips': three_trips,
+            'upcoming_trips': upcoming_trips,
         }
         return context
+
+
 
 
 class TripView(ListView):
