@@ -26,7 +26,6 @@ from viewer.views import (
 from django.contrib.auth import views
 import Voyage.settings as settings
 from django.conf.urls.static import static
-from viewer.views import *
 
 
 urlpatterns = [

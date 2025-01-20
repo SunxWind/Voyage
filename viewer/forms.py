@@ -35,8 +35,8 @@ class TripModelForm(ModelForm):
 
     def clean_code(self):
         initial = self.cleaned_data['code']
-        print(f"Initial = '{initial}'")
-        print(f"Initial length = '{len(initial)}'")
+        # print(f"Initial = '{initial}'")
+        # print(f"Initial length = '{len(initial)}'")
         if initial and len(initial) < 7:
             raise ValidationError("The code should consist of 7 symbols(4 letters and 3 digits).")
 
@@ -52,13 +52,13 @@ class TripModelForm(ModelForm):
             except:
                 raise ValidationError("The last three symbols of the code should contain numbers only.")
 
-        print(f"Return length = {len(initial.upper())}")
+        # print(f"Return length = {len(initial.upper())}")
 
         return initial.upper()
 
     def clean_departure_date(self):
         initial = self.cleaned_data['departure_date']
-        print(f"Initial = '{initial}'")
+        # print(f"Initial = '{initial}'")
         if initial and initial < datetime.date.today():
             raise ValidationError("It is not possible to set the departure date in the past.")
         return initial
@@ -67,7 +67,7 @@ class TripModelForm(ModelForm):
         cleaned_data = super().clean()
         initial = self.cleaned_data['return_date']
 
-        print(f"Initial = '{initial}'")
+        # print(f"Initial = '{initial}'")
         if initial and initial < datetime.date.today():
             raise ValidationError("It is not possible to set the return date in the past.")
 

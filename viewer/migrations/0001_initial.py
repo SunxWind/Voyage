@@ -52,7 +52,6 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=30)),
-                ('standard', models.IntegerField(default=None)),
                 ('description', models.TextField(default=None)),
                 ('city', models.ForeignKey(default=None, on_delete=django.db.models.deletion.DO_NOTHING, to='viewer.city')),
             ],

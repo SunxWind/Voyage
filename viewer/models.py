@@ -110,16 +110,16 @@ class Trip(Model):
     child_places = IntegerField(default=None, null=False, validators=[MinValueValidator(0)])
     description = TextField(default=None)
     short_description = TextField(default=None)
-    image = ImageField(upload_to="images", default=None, null=True)
-    image_small = ImageField(upload_to="images", default=None, null=True)
+    image = ImageField(upload_to="images", default=None, null=True, blank=True)
+    image_small = ImageField(upload_to="images", default=None, null=True, blank=True)
 
 
 class PurchasedTrip(Model):
     trip = ForeignKey(Trip, on_delete=DO_NOTHING, default=None)
-    firstname = CharField(max_length=128)
-    lastname = CharField(max_length=128)
+    firstname = CharField(max_length=128, null=False)
+    lastname = CharField(max_length=128, null=False)
     birth_date = DateField(default=None, null=False)
-    email = EmailField(max_length=70, blank=False, unique=True, default="your@email.domain")
+    email = EmailField(max_length=70, blank=False, unique=True, default=None, null=False)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
                                  message="Phone number must be entered in the format:"
                                          "'+999999999'. Up to 15 digits allowed.")

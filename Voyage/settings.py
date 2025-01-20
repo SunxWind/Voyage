@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'viewer',
+    'Voyage',
     'active_link',
     'django_countries',
     'smart_selects',
@@ -117,7 +119,7 @@ USE_I18N = True
 
 USE_TZ = True
 
-LOCALE_PATH = ['D:\\!Volka-Work\\SDA_Python\\!FinalProject\\TravelAgency\\Voyage\\viewer\\locale']
+LOCALE_PATH = [os.path.join(BASE_DIR, 'viewer\\locale')]
 
 LANGUAGES = [
     ('en', 'English'),
@@ -137,7 +139,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
-STATICFILES_DIRS = ['D:\\!Volka-Work\\SDA_Python\\!FinalProject\\TravelAgency\\Voyage\\viewer\\static']
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'viewer\\static')]
 
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = 'logout_page'
