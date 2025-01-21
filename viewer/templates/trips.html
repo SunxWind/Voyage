@@ -9,7 +9,7 @@
             <th>Where from</th>
             <th>Departure date</th>
             <th>Return date</th>
-            <th>Type</th>
+            <th>Service</th>
             <th>Price for adults</th>
             <th>Price for children</th>
             <th>Promoted</th>
@@ -26,7 +26,7 @@
             <td>{{ trip.where_from.name }}</td>
             <td>{{ trip.departure_date|date:'d.m.y' }}</td>
             <td>{{ trip.return_date|date:'d.m.y' }}</td>
-            <td>{{ trip.type }}</td>
+            <td>{{ trip.service_standard }}</td>
             <td>{{ trip.adult_price }}</td>
             <td>{{ trip.child_price }}</td>
             {% if trip.promoted == True %} <td>Yes</td> {% else %} <td>No</td> {% endif %}

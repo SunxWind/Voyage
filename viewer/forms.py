@@ -53,8 +53,8 @@ class TripModelForm(ModelForm):
                 raise ValidationError("The last three symbols of the code should contain numbers only.")
 
         # print(f"Return length = {len(initial.upper())}")
-
-        return initial.upper()
+        result = initial.upper()
+        return result
 
     def clean_departure_date(self):
         initial = self.cleaned_data['departure_date']

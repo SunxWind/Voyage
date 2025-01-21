@@ -109,7 +109,7 @@ class TripDetailsView(TemplateView):
         trip_id = self.request.GET.get('trip')
         trip = Trip.objects.get(pk=trip_id)
         context['trip'] = trip
-        context['trip_type'] = Trip.TYPE_CHOICES[trip.type]
+        context['service_standard'] = Trip.STANDARD_CHOICES[trip.service_standard]
         context['hotel'] = trip.where_to_hotel
         return context
 
@@ -138,7 +138,7 @@ class TripCreateView(StaffRequiredMixin, FormView):
             departure_date=cleaned_data['departure_date'],
             return_date=cleaned_data['return_date'],
             duration=cleaned_data['duration'],
-            type=cleaned_data['type'],
+            service_standard=cleaned_data['service_standard'],
             adult_price=cleaned_data['adult_price'],
             child_price=cleaned_data['child_price'],
             promoted=cleaned_data['promoted'],

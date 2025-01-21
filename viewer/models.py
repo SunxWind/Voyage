@@ -65,8 +65,8 @@ class Trip(Model):
     FB = 'FB'
     AI = 'AI'
 
-    TYPE_CHOICES = {
-        None: 'select type of stay',
+    STANDARD_CHOICES = {
+        None: 'select service standard',
         BB: 'bed & breakfast',
         HB: 'half board',
         FB: 'full board',
@@ -102,7 +102,7 @@ class Trip(Model):
     departure_date = DateField(default=None)
     return_date = DateField(default=None)
     duration = IntegerField(default=None, null=False, validators=[MinValueValidator(1)])
-    type = CharField(max_length=20, choices=TYPE_CHOICES, blank=False)
+    service_standard = CharField(max_length=20, choices=STANDARD_CHOICES, blank=False)
     adult_price = DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
     child_price = DecimalField(max_digits=8, decimal_places=2, validators=[MinValueValidator(0)])
     promoted = BooleanField(default=False)
