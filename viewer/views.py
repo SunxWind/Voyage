@@ -16,6 +16,10 @@ from django.contrib.auth.mixins import (
   LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 )
 
+from weatherbit.api import Api
+from Voyage.keys import pyweatherbit_key
+from viever.forcast_mock import forcast_mock
+
 
 class StaffRequiredMixin(UserPassesTestMixin):
     def test_func(self):
@@ -108,6 +112,18 @@ class TripDetailsView(TemplateView):
         context = super().get_context_data(**kwargs)
         trip_id = self.request.GET.get('trip')
         trip = Trip.objects.get(pk=trip_id)
+
+        # Integrating weather API
+        # api = Api(pyweatherbit_key)
+        # forcast = api.get_forecast(city=str(trip.where_to.name), state="",
+        #                            country=str(trip.where_to.country.name),
+        #                            days=16,
+        #                            tp='daily').get()
+
+        forcast = forcast_mock
+
+        for day in forcast:
+            print(day['app_max_temp'])
         context['trip'] = trip
         context['service_standard'] = Trip.STANDARD_CHOICES[trip.service_standard]
         context['hotel'] = trip.where_to_hotel

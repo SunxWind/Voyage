@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 
+from Voyage.keys import SECRET_KEY as KEY
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -21,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-()y$*%5i_a4)u9r%s#*6&%^6r)*8e3^8%4%&j^)m$v3jgwnh@k'
+SECRET_KEY = KEY
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
