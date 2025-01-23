@@ -41,5 +41,31 @@
         <h5 class="card-title">Service</h5>
         <p class="card-text">{{ service_standard }}</p>
     </div>
-</div>
+    <div class="card-body">
+        <h3>Weather forcast for {{ trip.where_to }}</h3>
+        <div class="overflow-auto">
+        {% if forcast %}
+        <div class="d-inline-flex">
+            {% for day in forcast %}
+            <div class="card text-center m-2 rounded" style="width: 10em; height: 18rem; background-color: white">
+                <h5 class="card-title d-flex justify-content-center bgcolor-dark border-bottom pt-2 pb-2 m-1 font-weight-bold text-white rounded">{{ day.week_day }}, {{ day.date_smpl }}</h5>
+                <div class="justify-content-center">
+                    <img src="{% static 'weather_icons/' %}{{ day.weather.icon }}.png" class="card-img-top" alt="weather pic" style="width: 4.5rem">
+                    <p class="card-subtitle">{{ day.weather.description }}</p>
+                </div>
+                <div class="card-body d-flex justify-content-center flex-column">
+                    <p class="card-text mt-0">{{ day.high_temp }}&degC / {{ day.low_temp }}&degC</p>
+                    <p class="card-text mt-0">Humidity: {{ day.rh }}%</p>
+                    <p class="card-text mt-0">Wind: {{ day.wind_spd }}m/s</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="d-flex justify-content-center p-2" style="background-color: white">
+            <h5>Sorry, the weather forcast for this location is not available :(</h5>
+        </div>
+        {% endif %}
+        </div>
+    </div>
 {% endblock %}

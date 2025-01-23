@@ -74,8 +74,13 @@
     </div>
     <div class="mt-auto">
         <ol class="carousel-indicators">
+            {% for trips in promoted_trips %}
+            {% if forloop.first %}
             <li data-target="#carouselPromotedTrips" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselPromotedTrips" data-slide-to="1"></li>
+            {% else %}
+            <li data-target="#carouselPromotedTrips" data-slide-to="{{ forloop.counter0 }}"></li>
+            {% endif %}
+            {% endfor %}
         </ol>
     </div>
 </div>
