@@ -204,7 +204,7 @@
          <div class="continent-image-area">
              <a href="{% url 'continent_trips' %}?continent=Antarctica" >
                   <img class="continent-image" src="viewer/static/images/Antarctica.jpg" alt="antarctica_image" >
-                    <div class="continent-title">Antarctica</div>
+                  <div class="continent-title">Antarctica</div>
              </a>
 
         </div>
@@ -216,6 +216,21 @@
         </div>
     </div>
 </div>
+
+
+<h3 style="text-align: center; background: white; opacity: 0.6; padding: 0.3em; font-size: 30; color: #3F4A86; font-weight: bold">Others have purchased</h3>
+<div class="recently-purchased-area-container">
+    {% for trip in recently_purchased_trips %}
+    <div class="recently-purchased-container">
+        <a class='recently-purchased-link' href="{% url 'trip_details' %}?trip={{ trip.trip.id }}">
+            <img class="recently-purchased-image" src="{{ trip.trip.image.url }}">
+            <div class="recently-purchased-text">{{ trip.trip.where_to.name }}</div>
+        </a>
+    </div>
+    {% endfor %}
+
+</div>
+
 
 
 {% endblock %}

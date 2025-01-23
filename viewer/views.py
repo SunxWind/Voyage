@@ -93,12 +93,18 @@ class IndexView(TemplateView):
         upcoming_cutof_date = datetime.now().date() + timedelta(days=30)
         upcoming_trips = Trip.objects.filter(departure_date__lte=upcoming_cutof_date)
 
+        recently_purchased_trips = PurchasedTrip.objects.order_by('-id')[:5]
+
+
         context = {
             'promoted_trips': promoted_trips,
             'three_trips': three_trips,
             'upcoming_trips': upcoming_trips,
+            'recently_purchased_trips': recently_purchased_trips,
         }
         return context
+
+
 
 
 
@@ -406,4 +412,6 @@ class CountryTripsView(TemplateView):
         }
 
         return context
+
+
 

@@ -110,6 +110,35 @@ h1 {
     text-shadow: black 0px 0 10px;
 }
 
+.recently-purchased-area-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.recently-purchased-container {
+    display: flex;
+    background: pink;
+    height: 130px;
+    width: 200px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background: white;
+    opacity: 0.6;
+}
+
+.recently-purchased-link {
+    font-size: 20;
+    font-weight: bold;
+    color: #3F4A86;
+}
+
+.recently-purchased-image {
+    width: 200px;
+    height: 100px;
+    object-fit: cover;
+}
 
 .countries-list-columns {
     width: 100%;
