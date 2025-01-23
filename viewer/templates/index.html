@@ -83,6 +83,42 @@
 <p>There are no promoted trips in the database</p>
 {% endif %}
 
+{% if upcoming_trips %}
+<div id="carouselUpcomingTrips" class="carousel slide d-flex align-items-start" data-ride="carousel" style="height: 280px">
+    <div class="carousel-inner">
+        {% for trip in upcoming_trips %}
+            {% if forloop.first %}<div class="carousel-item active">{% else %}<div class="carousel-item">{% endif %}
+                <div class="trips_line">
+                    <div class="trips-line-image-container">
+                        <img class="trips_line_image" src="{{ trip.image.url }}" alt="image{{ trip.where_to.name }}">
+                        <div class="last-minute-banner">LAST MINUTE</div>
+                    </div>
+                    <div class="trips_line_text">
+                        <h1>{{ trip.where_to.name }}</h1>
+                        <p class="trips_line_descrioption">{{ trip.description }} </p>
+                    </div>
+                    <div class="price_button_area">
+                        <h1 style="font-size: 30; color: black; margin-left: 1.5em;">Price:</h1>
+                        <a href="{% url 'trip_details' %}?trip={{ trip.id }}" >
+                            <btn class="btn_trip_buy_line">{{ trip.adult_price }}</btn>
+                        </a>
+                        <h1 style="font-size: 20; color: black; margin-top: 4.5em; margin-left: 1.8em;">For 1 adult</h1>
+                    </div>
+
+                </div>
+
+    </div>
+        {% endfor %}
+</div>
+    <div class="mt-auto">
+        <ol class="carousel-indicators">
+            <li data-target="#carouselPromotedTrips" data-slide-to="0" class="active"></li>
+            <li data-target="#carouselPromotedTrips" data-slide-to="1"></li>
+        </ol>
+    </div>
+</div>
+{% endif %}
+
 
 <h5 style="text-align: center; background: white; opacity: 0.6; padding: 0.5em; font-size: 50; color: #3F4A86; font-weight: bold">Explore by country</h5>
 <div class="filter-by-country">
@@ -100,6 +136,7 @@
         </a>
     </div>
 </div>
+
 
 
 <h5 style="text-align: center; background: white; opacity: 0.6; padding: 0.5em; font-size: 50; color: #3F4A86; font-weight: bold">Explore by continent</h5>
