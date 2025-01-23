@@ -88,8 +88,6 @@ class IndexView(TemplateView):
         upcoming_cutof_date = datetime.now().date() + timedelta(days=30)
         upcoming_trips = Trip.objects.filter(departure_date__lte=upcoming_cutof_date)
 
-        print(upcoming_trips)
-
         context = {
             'promoted_trips': promoted_trips,
             'three_trips': three_trips,
