@@ -50,7 +50,7 @@
 </div>
 
 {% if promoted_trips %}
-<div id="carouselPromotedTrips" class="carousel slide d-flex align-items-start" data-ride="carousel" style="height: 610px">
+<div id="carouselPromotedTrips" class="carousel slide d-flex align-items-start" style="height: 610px">
     <div class="carousel-inner">
         {% for trips in promoted_trips %}
             {% if forloop.first %}<div class="carousel-item active">{% else %}<div class="carousel-item">{% endif %}
@@ -84,12 +84,10 @@
         </ol>
     </div>
 </div>
-{% else%}
-<p>There are no promoted trips in the database</p>
 {% endif %}
 
 {% if upcoming_trips %}
-<div id="carouselUpcomingTrips" class="carousel slide d-flex align-items-start" data-ride="carousel" style="height: 280px">
+<div id="carouselUpcomingTrips" class="carousel slide d-flex align-items-start" style="height: 280px">
     <div class="carousel-inner">
         {% for trip in upcoming_trips %}
             {% if forloop.first %}<div class="carousel-item active">{% else %}<div class="carousel-item">{% endif %}
@@ -100,7 +98,7 @@
                     </div>
                     <div class="trips_line_text">
                         <h1>{{ trip.where_to.name }}</h1>
-                        <p class="trips_line_descrioption">{{ trip.description }} </p>
+                        <p class="trips_line_description">{{ trip.description }} </p>
                     </div>
                     <div class="price_button_area">
                         <h1 style="font-size: 30; color: black; margin-left: 1.5em;">Price:</h1>
@@ -109,16 +107,19 @@
                         </a>
                         <h1 style="font-size: 20; color: black; margin-top: 4.5em; margin-left: 1.8em;">For 1 adult</h1>
                     </div>
-
                 </div>
-
-    </div>
+            </div>
         {% endfor %}
-</div>
+    </div>
     <div class="mt-auto">
         <ol class="carousel-indicators">
-            <li data-target="#carouselPromotedTrips" data-slide-to="0" class="active"></li>
-            <li data-target="#carouselPromotedTrips" data-slide-to="1"></li>
+            {% for trip in upcoming_trips %}
+            {% if forloop.first %}
+            <li data-target="#carouselUpcomingTrips" data-slide-to="0" class="active"></li>
+            {% else %}
+            <li data-target="#carouselUpcomingTrips" data-slide-to="{{ forloop.counter0 }}"></li>
+            {% endif %}
+            {% endfor %}
         </ol>
     </div>
 </div>

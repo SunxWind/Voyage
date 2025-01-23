@@ -127,7 +127,8 @@ class TripDetailsView(TemplateView):
 
         # Integrating weather API
         # Only 1500 requests per day to this API is free of charge
-        # In order to make the forcast API working uncomment the lines below and comment the line 139
+        # In order to make the forcast API working uncomment the lines below and comment 4 lines
+        # starting from "forcast = forcast_mock"
 
         # api = Api(pyweatherbit_key)
         # try:
@@ -138,12 +139,16 @@ class TripDetailsView(TemplateView):
         #                                tp='daily').get()
         #
         #     for date in forcast:
-        #         date['week_day'] = datetime.datetime.strftime(date['datetime'], '%A')[0:3]
-        #         date['date_smpl'] = datetime.datetime.strftime(date['datetime'], '%d/%m')
+        #         date['week_day'] = date['datetime'].strftime('%A')[0:3]
+        #         date['date_smpl'] = date['datetime'].strftime('%d/%m')
         # except ValueError:
         #     forcast = None
 
         forcast = forcast_mock
+        for date in forcast:
+            date['week_day'] = date['datetime'].strftime('%A')[0:3]
+            date['date_smpl'] = date['datetime'].strftime('%d/%m')
+
         context['forcast'] = forcast
         return context
 
