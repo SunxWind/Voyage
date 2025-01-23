@@ -1,3 +1,4 @@
+import datetime
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login, logout
@@ -18,7 +19,7 @@ from django.contrib.auth.mixins import (
 
 from weatherbit.api import Api
 from Voyage.keys import pyweatherbit_key
-from viever.forcast_mock import forcast_mock
+from viewer.forcast_mock import forcast_mock
 
 
 class StaffRequiredMixin(UserPassesTestMixin):
@@ -113,20 +114,30 @@ class TripDetailsView(TemplateView):
         trip_id = self.request.GET.get('trip')
         trip = Trip.objects.get(pk=trip_id)
 
-        # Integrating weather API
-        # api = Api(pyweatherbit_key)
-        # forcast = api.get_forecast(city=str(trip.where_to.name), state="",
-        #                            country=str(trip.where_to.country.name),
-        #                            days=16,
-        #                            tp='daily').get()
-
-        forcast = forcast_mock
-
-        for day in forcast:
-            print(day['app_max_temp'])
         context['trip'] = trip
         context['service_standard'] = Trip.STANDARD_CHOICES[trip.service_standard]
         context['hotel'] = trip.where_to_hotel
+
+        # Integrating weather API
+        # Only 1500 requests per day to this API is free of charge
+        # In order to make the forcast API working uncomment the lines below and comment the line 139
+
+        # api = Api(pyweatherbit_key)
+        # try:
+        #     # int('a')
+        #     forcast = api.get_forecast(city=str(trip.where_to.name),
+        #                                country=str(trip.where_to.country.name),
+        #                                days=10,
+        #                                tp='daily').get()
+        #
+        #     for date in forcast:
+        #         date['week_day'] = datetime.datetime.strftime(date['datetime'], '%A')[0:3]
+        #         date['date_smpl'] = datetime.datetime.strftime(date['datetime'], '%d/%m')
+        # except ValueError:
+        #     forcast = None
+
+        forcast = forcast_mock
+        context['forcast'] = forcast
         return context
 
 
