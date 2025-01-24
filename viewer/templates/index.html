@@ -6,7 +6,55 @@
     Main page
 {% endblock %}
 
+
 {% block carousel %}
+<div class="search-bar-area-container">
+    <div class="departure-search">
+        <input id="departure" type="text" placeholder="Departure..." autocomplete="off" style="padding: 0.7em">
+        <div id="autocomplete"></div>
+        <script>
+            const departure = document.getElementById('departure');
+            const autocompleteDiv = document.getElementById('autocompleteSuggestions');
+
+            departure.addEventListener('input',function () {
+                const query = departure.value.trim();
+
+                if (query.length > 2) {
+                    fetch(`/trips-search/?departure=${encodeURIComponent(query)}`)
+                        .then(response => {
+                            return response.json();
+                        })
+                        .then(data => {
+                            autocompleteDiv.innerHTML = '';
+                            if (data.length === 0) {
+                                autocompleteDiv.innerHTML = '<div class="suggestion-item">No results found</div>';
+                            } else {
+                                data.forEach(item => {
+
+                                    const suggestions = document.createElement('div');
+                                    suggestions.textContent = item.departure;
+                                    suggestions.classList.add('suggestion-item');
+                                    suggestions.addEventListener('click', () => {
+                                        departure.value = item.departure;
+                                        autocompleteDiv.innerHTML = '';
+
+
+                                    });
+                                    autocompleteDiv.appendChild(suggestions);
+                                });
+                            }
+                        })
+                } else {
+                    autocompleteDiv.innerHTML='';
+                }
+            });
+        </script>
+
+
+    </div>
+
+</div>
+
 <div id="carouselExampleIndicators" class="carousel slide d-flex flex-column" data-ride="carousel"  style="height: 435px">
     <div class="carousel-inner border border-1 border-white">
         <div class="carousel-item active">
