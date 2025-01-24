@@ -30,7 +30,6 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # re_path(r'^chaining/', include('smart_selects.urls',)),
     path('', include('smart_selects.urls',)),
     path('', IndexView.as_view(), name='index'),
 

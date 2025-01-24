@@ -170,7 +170,6 @@ class TripCreateView(StaffRequiredMixin, FormView):
         return context
 
     def form_valid(self, form):
-        print("You are in the TripCreateView form_valid method")
         result = super().form_valid(form)
         cleaned_data = form.cleaned_data
         Trip.objects.create(
@@ -355,6 +354,12 @@ class PurchasedTripDeleteView(StaffRequiredMixin, DeleteView):
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_staff:
             return redirect('/purchased_trips')
+        purchased_trip_id = int(str(request.path).strip('/purchased_trips/delete/'))
+        purchased_trip = PurchasedTrip.objects.get(pk=purchased_trip_id)
+        trip = purchased_trip.trip
+        trip.adult_places += purchased_trip.amount_adult
+        trip.child_places += purchased_trip.amount_child
+        trip.save()
         return super().dispatch(request, *args, **kwargs)
 
 
