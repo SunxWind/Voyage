@@ -106,39 +106,22 @@ class IndexView(TemplateView):
         }
         return context
 
-class TripSearchView(TemplateView):
-    def get(self, request, *args, **kwargs):
-        query = request.GET.get('departure', '')
-        results = []
-        if query:
-            all_trips = Trip.objects.filter()
-            for trip in all_trips:
-                print(trip.where_to.name)
-            print(f"query received: {query}")
-            searched_trips = Trip.objects.filter(where_to__isnull=False, where_to__name__icontains=query).distinct()
-            print(f"query results: {searched_trips}")
-            suggestions = list(searched_trips.values_list('where_to__name'))
+# class TripSearchView(TemplateView):
+#     def get(self, request, *args, **kwargs):
+#         query = request.GET.get('departure', '')
+#         results = []
+#         if query:
+#             all_trips = Trip.objects.filter()
+#             for trip in all_trips:
+#                 print(trip.where_to.name)
+#             print(f"query received: {query}")
+#             searched_trips = Trip.objects.filter(where_to__isnull=False, where_to__name__icontains=query).distinct()
+#             print(f"query results: {searched_trips}")
+#             suggestions = list(searched_trips.values_list('where_to__name'))
+#
+#         print(f"Response result: {suggestions}")
+#         return JsonResponse(list(suggestions), safe=False)
 
-        print(f"Response result: {suggestions}")
-        return JsonResponse(list(suggestions), safe=False)
-
-
-class SearchResultsView(TemplateView):
-    template_name = 'filtered_trips'
-
-    def get_context_data(self, *args, **kwargs):
-        all_trips = Trip.objects.filter()
-        departure = self.request.GET.get('departure','')
-
-        if departure:
-            searched_trips = Trip.objects.filter(where_to__icontains=departure)
-        else:
-            searched_trips = Trip.objects.filter()
-
-        context = {
-        'searched_trips': searched_trips
-        }
-        return context
 
 
 
@@ -444,6 +427,26 @@ class CountryTripsView(TemplateView):
             'filtered_trips': filtered_trips
         }
 
+        return context
+
+class SearchResultsView(TemplateView):
+    template_name = 'filtered_trips.html'
+
+    def get_context_data(self, *args, **kwargs):
+        all_trips = Trip.objects.filter()
+        city = self.request.GET.get('s_city','')
+
+        print(f"city: {city}")
+        if city:
+            filtered_trips = Trip.objects.filter(where_to__name=city)
+        else:
+            filtered_trips = Trip.objects.filter()
+
+        print(f"filtered_trips: {filtered_trips}")
+        context = {
+        'filtered_trips': filtered_trips
+        }
+        print(f"context: {context}")
         return context
 
 

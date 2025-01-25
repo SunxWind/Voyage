@@ -20,7 +20,7 @@ from django.urls import path, include
 from viewer.views import (
     IndexView, ContinentView, TripView, TripDetailsView, TripCreateView, TripUpdateView, TripDeleteView,
     TripPurchaseView, PurchasedTripsView, PurchasedTripUpdateView, PurchasedTripDeleteView, CustomLoginView,
-    RegisterView, ProfileView, logout_page, purchase_approval, CountriesListView, CountryTripsView, TripSearchView
+    RegisterView, ProfileView, logout_page, purchase_approval, CountriesListView, CountryTripsView, SearchResultsView
 )
 
 from django.contrib.auth import views
@@ -54,7 +54,7 @@ urlpatterns = [
     path('register', RegisterView.as_view(), name='register'),
     path('profile', ProfileView.as_view(), name='profile'),
 
-    path('trips-search/', TripSearchView.as_view(), name='trip_search'),
+    path('search_results', SearchResultsView.as_view(), name='search_results'),
     path('continent/trips', ContinentView.as_view(), name='continent_trips'),
     path('countries_list', CountriesListView.as_view(), name="countries_list"),
     path('country/trips', CountryTripsView.as_view(), name='country_trips')
