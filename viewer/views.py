@@ -419,6 +419,9 @@ class SearchResultsView(TemplateView):
         city = self.request.GET.get('s_city','')
         hotel = self.request.GET.get('s_hotel','')
         sort = self.request.GET.get('sort','')
+        standard = self.request.GET.get('standard','')
+        adults = self.request.GET.get('adults','')
+        children = self.request.GET.get('children','')
 
         if continent:
             trips = trips.filter(where_to_id__continent=continent)
@@ -429,20 +432,22 @@ class SearchResultsView(TemplateView):
         if hotel:
             trips = trips.filter(where_to_hotel__name__icontains=hotel)
 
-
         if sort == 'price':
             trips = trips.order_by('adult_price')
         else:
             sort = 'date'
             trips = trips.order_by('departure_date')
 
-        filtered_trips = trips
+        if standard:
+            trips = trips.filter(service_standard=standard)
 
+        if adults:
+            trips = trips.filter(adult_places__gte=adults)
+        if children:
+            trips = trips.filter(child_places__gte=children)
+
+        filtered_trips = trips
         context = {
         'filtered_trips': filtered_trips
         }
-
         return context
-
-
-
