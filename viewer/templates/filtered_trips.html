@@ -7,6 +7,55 @@
 {% block content %}
 
 {% if filtered_trips %}
+    <div class="sort-filter-row">
+        <div class="sorting-dropdown">
+            <form method="get">
+                <label for="sort" style="font-weight: bold">Sort by:</label>
+                <select name="sort" id="sort" onchange="updateURLSortOption(this.value)">
+                    <option value="date" {%if request.GET.sort == "date" %}selected{% endif %}>Date</option>
+                    <option value="price" {%if request.GET.sort == "price" %}selected{% endif %}>Price</option>
+                </select>
+                <script>
+                    function updateURLSortOption(sortValue) {
+                        const currentUrl = new URL(window.location);
+                        currentUrl.searchParams.set('sort', sortValue);
+                        window.location.href = currentUrl.toString();
+                    }
+                </script>
+            </form>
+        </div>
+
+        <div class="filter-row">
+
+            <div class="filter-standad-dropdown">
+                <label for = "standard" style="font-weight: bold">Filter by:</label>
+                <select name="standard" id="standard" onchange="updateURLStandardOption(this.value)">
+                    <option value="" {%if request.GET.standard == "ALL" %}selected{% endif %}>All standards</option>
+                    <option value="BB" {%if request.GET.standard == "BB" %}selected{% endif %}>Bead & breakfats</option>
+                    <option value="HB" {%if request.GET.standard == "HB" %}selected{% endif %}>Half board</option>
+                    <option value="FB" {%if request.GET.standard == "FB" %}selected{% endif %}>Full board</option>
+                    <option value="AI" {%if request.GET.standard == "AI" %}selected{% endif %}>All inclusive</option>
+                </select>
+                <script>
+                    function updateURLStandardOption(standardValue) {
+                        const currentUrl = new URL(window.location);
+                        currentUrl.searchParams.set('standard', standardValue);
+                        window.location.href = currentUrl.toString();
+                    }
+                </script>
+            </div>
+            <div class="empty-places">
+                <form action="#">
+                    <label for="places-adult" style="font-weight: bold">Places Adults:</label>
+                    <input class="places-input" type="number" id="places-adult" value="1">
+                    <label for="places-children" style="font-weight: bold">Children:</label>
+                    <input class="places-input" type="number" id="places-children" value="0">
+                </form>
+
+            </div>
+        </div>
+    </div>
+
     <div class="trips-table">
         {% for trip in filtered_trips %}
             <div class="trips_line">

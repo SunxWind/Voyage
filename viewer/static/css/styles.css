@@ -189,6 +189,22 @@ h1 {
     right: 3%;
 }
 
+.sort-filter-row {
+    display: flex;
+}
+
+.filter-row {
+    display: flex;
+    margin-left: 30px;
+}
+
+.empty-places {
+    margin-left: 30px;
+}
+.places-input {
+    width: 35px;
+}
+
 
 .search-bar-area-container{
 

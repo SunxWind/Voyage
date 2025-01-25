@@ -393,6 +393,7 @@ class ContinentView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        sort = self.request.GET.get('sort', '')
         continent = self.request.GET.get('continent')
         context['continent'] = continent
 
@@ -400,6 +401,12 @@ class ContinentView(TemplateView):
             filtered_trips = Trip.objects.filter()
         else:
             filtered_trips = Trip.objects.filter(where_to_id__continent=continent)
+
+        if sort == 'price':
+            filtered_trips = filtered_trips.order_by('adult_price')
+        else:
+            sort = 'date'
+            filtered_trips = filtered_trips.order_by('departure_date')
 
         context = {
             'filtered_trips': filtered_trips
@@ -433,10 +440,18 @@ class CountryTripsView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        sort = self.request.GET.get('sort', '')
         country = self.request.GET.get('country')
         context['country'] = country
 
         filtered_trips = Trip.objects.filter(where_to_id__country__name=country)
+
+        if sort == 'price':
+            filtered_trips = filtered_trips.order_by('adult_price')
+        else:
+            sort = 'date'
+            filtered_trips = filtered_trips.order_by('departure_date')
+
         context = {
             'filtered_trips': filtered_trips
         }
@@ -451,6 +466,7 @@ class SearchResultsView(TemplateView):
         country = self.request.GET.get('s_country', '')
         city = self.request.GET.get('s_city','')
         hotel = self.request.GET.get('s_hotel','')
+        sort = self.request.GET.get('sort','')
 
         if country:
             trips = trips.filter(where_to__country__name=country)
@@ -458,6 +474,13 @@ class SearchResultsView(TemplateView):
             trips = trips.filter(where_to__name=city)
         if hotel:
             trips = trips.filter(where_to_hotel__name__icontains=hotel)
+
+
+        if sort == 'price':
+            trips = trips.order_by('adult_price')
+        else:
+            sort = 'date'
+            trips = trips.order_by('departure_date')
 
         filtered_trips = trips
 
