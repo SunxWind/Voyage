@@ -97,7 +97,6 @@ class IndexView(TemplateView):
 
         recently_purchased_trips = PurchasedTrip.objects.order_by('-id')[:5]
 
-
         context = {
             'promoted_trips': promoted_trips,
             'three_trips': three_trips,
@@ -122,7 +121,6 @@ class IndexView(TemplateView):
 #
 #         print(f"Response result: {suggestions}")
 #         return JsonResponse(list(suggestions), safe=False)
-
 
 
 
@@ -187,7 +185,6 @@ class TripCreateView(StaffRequiredMixin, FormView):
         return context
 
     def form_valid(self, form):
-        print("You are in the TripCreateView form_valid method")
         result = super().form_valid(form)
         cleaned_data = form.cleaned_data
         Trip.objects.create(
@@ -368,6 +365,22 @@ class PurchasedTripDeleteView(StaffRequiredMixin, DeleteView):
     template_name = 'purchased_trip_delete_form.html'
     model = PurchasedTrip
     success_url = reverse_lazy('purchased_trips')
+
+    def form_valid(self, form):
+        messages.error(self.request, form.errors)
+        purchased_trip_id = self.kwargs.get('pk')
+        print('purchased_trip_id = ', purchased_trip_id)
+        purchased_trip = PurchasedTrip.objects.get(pk=purchased_trip_id)
+        trip = purchased_trip.trip
+        print('purchased_trip.amount_adult = ', purchased_trip.amount_adult)
+        print('purchased_trip.amount_child = ', purchased_trip.amount_child)
+        print(trip)
+        trip.adult_places += purchased_trip.amount_adult
+        trip.child_places += purchased_trip.amount_child
+        print('trip.adult_places = ', trip.adult_places)
+        print('trip.child_places = ', trip.child_places)
+        trip.save()
+        return super().form_valid(form)
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_staff:
