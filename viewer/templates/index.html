@@ -9,25 +9,39 @@
 
 {% block carousel %}
 <div class="search-bar-area-container">
-    <div class="destiantion-city">
+    <div class="destiantion-search-bar">
+        <input id="destination-country-input" type="text" placeholder="Country..." autocomplete="off" style="padding: 0.7em">
         <input id="destination-city-input" type="text" placeholder="City..." autocomplete="off" style="padding: 0.7em">
-        <a id="destination-link" href="{% url 'search_results' %}" >
-            <button id="destination-city-button" class="btn btn-primary" style="padding: 0.7em" onclick="updateLink(event)">Search</button>
-        </a>
+        <input id="destination-hotel-input" type="text" placeholder="Hotel..." autocomplete="off" style="padding: 0.7em">
+        <a id="destination-link" href="{% url 'search_results' %}" class="btn btn-primary" style="padding: 0.7em" onclick="updateLink(event)">Search</a>
 
         <script>
             function updateLink(event) {
                 event.preventDefault();
-                const input = document.getElementById('destination-city-input').value;
+                const input_country = document.getElementById('destination-country-input').value;
+                const input_city = document.getElementById('destination-city-input').value;
+                const input_hotel = document.getElementById('destination-hotel-input').value;
                 const link = document.getElementById('destination-link');
-                if (input.trim() !== '') {
-                    const baseUrl = link.getAttribute('href').split('?')[0]
-                    link.href = `${baseUrl}?s_city=${encodeURIComponent(input)}`;
+
+                let queryParameters = [];
+                if (input_country.trim() !== '') {
+                    queryParameters.push(`s_country=${encodeURIComponent(input_country)}`);
+                }
+                if (input_city.trim() !== '') {
+                    queryParameters.push(`s_city=${encodeURIComponent(input_city)}`);
+                }
+                if (input_hotel.trim() !== '') {
+                    queryParameters.push(`s_hotel=${encodeURIComponent(input_hotel)}`);
+                }
+
+                if (queryParameters.length > 0) {
+                    link.href = `search_results/?${queryParameters.join('&')}`;
                     window.location.href = link.href;
                 }
                 else{
                     alert('Please enter a city name');
                 }
+                queryParameters = []
             }
         </script>
     </div>
