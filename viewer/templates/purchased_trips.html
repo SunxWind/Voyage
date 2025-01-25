@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block title %}
+    Purchased trips
+{% endblock %}
+
 {% block content %}
     {% if request.user.is_staff %}
         <table class="table table-striped table-hover text-white">
