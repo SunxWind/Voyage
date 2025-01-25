@@ -388,32 +388,6 @@ class PurchasedTripDeleteView(StaffRequiredMixin, DeleteView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class ContinentView(TemplateView):
-    template_name = 'filtered_trips.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        sort = self.request.GET.get('sort', '')
-        continent = self.request.GET.get('continent')
-        context['continent'] = continent
-
-        if continent == "All":
-            filtered_trips = Trip.objects.filter()
-        else:
-            filtered_trips = Trip.objects.filter(where_to_id__continent=continent)
-
-        if sort == 'price':
-            filtered_trips = filtered_trips.order_by('adult_price')
-        else:
-            sort = 'date'
-            filtered_trips = filtered_trips.order_by('departure_date')
-
-        context = {
-            'filtered_trips': filtered_trips
-        }
-
-        return context
-
 
 class CountriesListView(TemplateView):
     template_name = 'countries_list.html'
@@ -435,39 +409,19 @@ class CountriesListView(TemplateView):
         return context
 
 
-class CountryTripsView(TemplateView):
-    template_name = 'filtered_trips.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        sort = self.request.GET.get('sort', '')
-        country = self.request.GET.get('country')
-        context['country'] = country
-
-        filtered_trips = Trip.objects.filter(where_to_id__country__name=country)
-
-        if sort == 'price':
-            filtered_trips = filtered_trips.order_by('adult_price')
-        else:
-            sort = 'date'
-            filtered_trips = filtered_trips.order_by('departure_date')
-
-        context = {
-            'filtered_trips': filtered_trips
-        }
-
-        return context
-
 class SearchResultsView(TemplateView):
     template_name = 'filtered_trips.html'
 
     def get_context_data(self, *args, **kwargs):
         trips = Trip.objects.filter()
+        continent = self.request.GET.get('s_continent', '')
         country = self.request.GET.get('s_country', '')
         city = self.request.GET.get('s_city','')
         hotel = self.request.GET.get('s_hotel','')
         sort = self.request.GET.get('sort','')
 
+        if continent:
+            trips = trips.filter(where_to_id__continent=continent)
         if country:
             trips = trips.filter(where_to__country__name=country)
         if city:
