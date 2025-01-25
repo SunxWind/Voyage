@@ -6,7 +6,80 @@
 
 {% block content %}
 
+
 {% if filtered_trips %}
+
+<body>
+    <div class="sort-filter-row">
+        <div class="sorting-dropdown">
+            <form method="get">
+                <label for="sort" style="font-weight: bold">Sort by:</label>
+                <select name="sort" id="sort" onchange="updateURLSortOption(this.value)">
+                    <option value="date" {%if request.GET.sort == "date" %}selected{% endif %}>Date</option>
+                    <option value="price" {%if request.GET.sort == "price" %}selected{% endif %}>Price</option>
+                </select>
+                <script>
+                    function updateURLSortOption(sortValue) {
+                        const currentUrl = new URL(window.location);
+                        currentUrl.searchParams.set('sort', sortValue);
+                        window.location.href = currentUrl.toString();
+                    }
+                </script>
+            </form>
+        </div>
+
+        <div class="filter-row">
+            <div class="filter-standad-dropdown">
+                <label for = "standard" style="font-weight: bold">Filter by:</label>
+                <select name="standard" id="standard" onchange="updateURLStandardOption(this.value)">
+                    <option value="" {%if request.GET.standard == "ALL" %}selected{% endif %}>All standards</option>
+                    <option value="BB" {%if request.GET.standard == "BB" %}selected{% endif %}>Bead & breakfats</option>
+                    <option value="HB" {%if request.GET.standard == "HB" %}selected{% endif %}>Half board</option>
+                    <option value="FB" {%if request.GET.standard == "FB" %}selected{% endif %}>Full board</option>
+                    <option value="AI" {%if request.GET.standard == "AI" %}selected{% endif %}>All inclusive</option>
+                </select>
+                <script>
+                    function updateURLStandardOption(standardValue) {
+                        const currentUrl = new URL(window.location);
+                        currentUrl.searchParams.set('standard', standardValue);
+                        window.location.href = currentUrl.toString();
+                    }
+                </script>
+            </div>
+            <div class="empty-places">
+                <label for="places-adult" style="font-weight: bold">Places Adults:</label>
+                <input class="places-input" type="number" id="places-adult" onchange="updateURLAdultPlaces(this.value)">
+                <label for="places-children" style="font-weight: bold" >Children:</label>
+                <input class="places-input" type="number" id="places-children" onchange="updateURLChildPlaces(this.value)">
+                <script>
+                    console.log("inside script")
+                    function updateURLAdultPlaces(standardValue) {
+                        console.log('inside updateURLAdultPlaces')
+                        if (standardValue < 1) {
+                            window.alert('Please enter a valid number of adults (min 1)');
+                        }
+                        else {
+                            const currentUrl = new URL(window.location);
+                            currentUrl.searchParams.set('adults', standardValue);
+                            window.location.href = currentUrl.toString();
+                        }
+                    }
+                    function updateURLChildPlaces(standardValue) {
+                        console.log('inside updateURLChildPlaces')
+                        if (standardValue < 0) {
+                            window.alert('Please enter a valid number of children');
+                        }
+                        else {
+                            const currentUrl = new URL(window.location);
+                            currentUrl.searchParams.set('children', standardValue);
+                            window.location.href = currentUrl.toString();
+                        }
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+
     <div class="trips-table">
         {% for trip in filtered_trips %}
             <div class="trips_line">
@@ -23,7 +96,6 @@
                         </a>
                         <h1 style="font-size: 20; color: black; margin-top: 4.5em; margin-left: 1.8em;">For 1 adult</h1>
                     </div>
-
             </div>
         {% endfor %}
     </div>
@@ -33,6 +105,25 @@
     </h1>
 {% endif %}
 
+    <script>
+        const queryPlaces = window.location.search;
+        console.log(queryPlaces);
 
+        const urlParams = new URLSearchParams(queryPlaces);
+        const adults = urlParams.get('adults');
+        const children = urlParams.get('children');
+        console.log(adults);
 
+        const placesAdults = document.getElementById('places-adult');
+        placesAdults.value = adults;
+        if (adults !== null) {
+            placesAdults.value = adults;
+        }
+        const placesChildren = document.getElementById('places-children');
+        placesChildren.value = children;
+        if (children !== null) {
+            placesChildren.value = children;
+        }
+    </script>
+</body>
 {% endblock %}
