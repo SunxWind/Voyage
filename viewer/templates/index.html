@@ -10,10 +10,10 @@
 {% block carousel %}
 <div class="search-bar-area-container">
     <div class="destiantion-search-bar">
-        <input id="destination-country-input" type="text" placeholder="Country..." autocomplete="off" style="padding: 0.7em">
-        <input id="destination-city-input" type="text" placeholder="City..." autocomplete="off" style="padding: 0.7em">
-        <input id="destination-hotel-input" type="text" placeholder="Hotel..." autocomplete="off" style="padding: 0.7em">
-        <a id="destination-link" href="{% url 'search_results' %}" class="btn btn-primary" style="padding: 0.7em" onclick="updateLink(event)">Search</a>
+        <input class="search-field" id="destination-country-input" type="text" placeholder="Country..." autocomplete="off" style="padding: 0.7em">
+        <input class="search-field" id="destination-city-input" type="text" placeholder="City..." autocomplete="off" style="padding: 0.7em">
+        <input class="search-field" id="destination-hotel-input" type="text" placeholder="Hotel..." autocomplete="off" style="padding: 0.7em">
+        <a  id="destination-link" href="{% url 'search_results' %}" class="btn btn-search" onclick="updateLink(event)">Search</a>
 
         <script>
             function updateLink(event) {
@@ -34,13 +34,9 @@
                     queryParameters.push(`s_hotel=${encodeURIComponent(input_hotel)}`);
                 }
 
-                if (queryParameters.length > 0) {
-                    link.href = `search_results/?${queryParameters.join('&')}`;
-                    window.location.href = link.href;
-                }
-                else{
-                    alert('Please enter a city name');
-                }
+                link.href = `search_results/?${queryParameters.join('&')}`;
+                window.location.href = link.href;
+
                 queryParameters = []
             }
         </script>

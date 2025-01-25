@@ -106,6 +106,7 @@ class IndexView(TemplateView):
         }
         return context
 
+# Integrating search bar suggestions
 # class TripSearchView(TemplateView):
 #     def get(self, request, *args, **kwargs):
 #         query = request.GET.get('departure', '')
@@ -438,24 +439,19 @@ class SearchResultsView(TemplateView):
         city = self.request.GET.get('s_city','')
         hotel = self.request.GET.get('s_hotel','')
 
-        print(f"city: {city}")
         if country:
             trips = trips.filter(where_to__country__name=country)
-
         if city:
             trips = trips.filter(where_to__name=city)
-
         if hotel:
             trips = trips.filter(where_to_hotel__name__icontains=hotel)
 
-
-
         filtered_trips = trips
-        print(f"filtered_trips: {filtered_trips}")
+
         context = {
         'filtered_trips': filtered_trips
         }
-        print(f"context: {context}")
+
         return context
 
 
