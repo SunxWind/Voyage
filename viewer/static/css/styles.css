@@ -23,6 +23,13 @@ h1 {
     opacity: 0.6
 }
 
+.promoted-trips-container {
+    overflow: auto;
+    scrollbar-color: #3F4A86 transparent;
+    scrollbar-width: auto;
+    scrollbar-height: 20px;
+}
+
 .filter-by-country {
     position: relative;
     background: pink;

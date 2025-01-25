@@ -81,16 +81,17 @@ class IndexView(TemplateView):
     model = Trip
 
     def get_context_data(self, **kwargs):
-        trips = Trip.objects.filter(promoted=True)
-        promoted_trips = []
-        cards_block = []
-        for i, trp in enumerate(trips):
-            cards_block.append(trp)
-            if (i + 1) % 3 == 0 or i == len(trips) - 1:
-                promoted_trips.append(cards_block)
-                cards_block = []
+        promoted_trips = Trip.objects.filter(promoted=True)
 
-        three_trips = promoted_trips[slice(1)]
+        trips_list = []
+        trips_block = []
+        for i, trp in enumerate(promoted_trips):
+            trips_block.append(trp)
+            if (i + 1) % 3 == 0 or i == len(promoted_trips) - 1:
+                trips_list.append(trips_block)
+                trips_block = []
+
+        three_trips = trips_list[slice(1)]
 
         upcoming_cutof_date = datetime.now().date() + timedelta(days=30)
         upcoming_trips = Trip.objects.filter(departure_date__lte=upcoming_cutof_date)
