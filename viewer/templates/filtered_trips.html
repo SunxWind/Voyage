@@ -5,25 +5,33 @@
 {% endblock %}
 
 {% block content %}
-<div class="trips-table">
-    {% for trip in filtered_trips %}
-        <div class="trips_line">
-            <img class="trips_line_image" src="{{ trip.image.url }}" alt="image{{ trip.where_to.name }}">
-            <div class="trips_line_text">
-                <h1>{{ trip.where_to.name }}</h1>
-                <p class="trips_line_descrioption">{{ trip.description }} </p>
-            </div>
-                <div class="price_button_area">
-                    <h1 style="font-size: 30; color: black; margin-left: 1.5em;">Price:</h1>
-                    <a href="{% url 'trip_details' %}?trip={{ trip.id }}" >
-                        <btn class="btn_trip_buy_line">{{ trip.adult_price }}</btn>
-                    </a>
-                    <h1 style="font-size: 20; color: black; margin-top: 4.5em; margin-left: 1.8em;">For 1 adult</h1>
-                </div>
 
-        </div>
-    {% endfor %}
-</div>
+{% if filtered_trips %}
+    <div class="trips-table">
+        {% for trip in filtered_trips %}
+            <div class="trips_line">
+                <img class="trips_line_image" src="{{ trip.image.url }}" alt="image{{ trip.where_to.name }}">
+                <div class="trips_line_text">
+                    <h1>{{ trip.where_to.name }} </h1>
+                    <h2 style="font-size: 27">{{ trip.where_to_hotel.name }}</h2>
+                    <p class="trips_line_descrioption">{{ trip.short_description }} </p>
+                </div>
+                    <div class="price_button_area">
+                        <h1 style="font-size: 30; color: black; margin-left: 1.5em;">Price:</h1>
+                        <a href="{% url 'trip_details' %}?trip={{ trip.id }}" >
+                            <btn class="btn_trip_buy_line">{{ trip.adult_price }}</btn>
+                        </a>
+                        <h1 style="font-size: 20; color: black; margin-top: 4.5em; margin-left: 1.8em;">For 1 adult</h1>
+                    </div>
+
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <h1 style="font-size: 20; color: white; text-align: center">No trips matching your search found. <a
+        href="{% url 'index' %}" style="color: darkblue">Return to homepage.</a>
+    </h1>
+{% endif %}
 
 
 

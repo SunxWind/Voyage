@@ -1,4 +1,6 @@
 import datetime
+
+from certifi import where
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import login, logout
@@ -102,6 +104,24 @@ class IndexView(TemplateView):
             'recently_purchased_trips': recently_purchased_trips,
         }
         return context
+
+# Integrating search bar suggestions
+# class TripSearchView(TemplateView):
+#     def get(self, request, *args, **kwargs):
+#         query = request.GET.get('departure', '')
+#         results = []
+#         if query:
+#             all_trips = Trip.objects.filter()
+#             for trip in all_trips:
+#                 print(trip.where_to.name)
+#             print(f"query received: {query}")
+#             searched_trips = Trip.objects.filter(where_to__isnull=False, where_to__name__icontains=query).distinct()
+#             print(f"query results: {searched_trips}")
+#             suggestions = list(searched_trips.values_list('where_to__name'))
+#
+#         print(f"Response result: {suggestions}")
+#         return JsonResponse(list(suggestions), safe=False)
+
 
 
 class TripView(ListView):
@@ -419,6 +439,30 @@ class CountryTripsView(TemplateView):
         filtered_trips = Trip.objects.filter(where_to_id__country__name=country)
         context = {
             'filtered_trips': filtered_trips
+        }
+
+        return context
+
+class SearchResultsView(TemplateView):
+    template_name = 'filtered_trips.html'
+
+    def get_context_data(self, *args, **kwargs):
+        trips = Trip.objects.filter()
+        country = self.request.GET.get('s_country', '')
+        city = self.request.GET.get('s_city','')
+        hotel = self.request.GET.get('s_hotel','')
+
+        if country:
+            trips = trips.filter(where_to__country__name=country)
+        if city:
+            trips = trips.filter(where_to__name=city)
+        if hotel:
+            trips = trips.filter(where_to_hotel__name__icontains=hotel)
+
+        filtered_trips = trips
+
+        context = {
+        'filtered_trips': filtered_trips
         }
 
         return context

@@ -6,7 +6,44 @@
     Main page
 {% endblock %}
 
+
 {% block carousel %}
+<div class="search-bar-area-container">
+    <div class="destiantion-search-bar">
+        <input class="search-field" id="destination-country-input" type="text" placeholder="Country..." autocomplete="off" style="padding: 0.7em">
+        <input class="search-field" id="destination-city-input" type="text" placeholder="City..." autocomplete="off" style="padding: 0.7em">
+        <input class="search-field" id="destination-hotel-input" type="text" placeholder="Hotel..." autocomplete="off" style="padding: 0.7em">
+        <a  id="destination-link" href="{% url 'search_results' %}" class="btn btn-search" onclick="updateLink(event)">Search</a>
+
+        <script>
+            function updateLink(event) {
+                event.preventDefault();
+                const input_country = document.getElementById('destination-country-input').value;
+                const input_city = document.getElementById('destination-city-input').value;
+                const input_hotel = document.getElementById('destination-hotel-input').value;
+                const link = document.getElementById('destination-link');
+
+                let queryParameters = [];
+                if (input_country.trim() !== '') {
+                    queryParameters.push(`s_country=${encodeURIComponent(input_country)}`);
+                }
+                if (input_city.trim() !== '') {
+                    queryParameters.push(`s_city=${encodeURIComponent(input_city)}`);
+                }
+                if (input_hotel.trim() !== '') {
+                    queryParameters.push(`s_hotel=${encodeURIComponent(input_hotel)}`);
+                }
+
+                link.href = `search_results/?${queryParameters.join('&')}`;
+                window.location.href = link.href;
+
+                queryParameters = []
+            }
+        </script>
+    </div>
+
+</div>
+
 <div id="carouselExampleIndicators" class="carousel slide d-flex flex-column" data-ride="carousel"  style="height: 435px">
     <div class="carousel-inner border border-1 border-white">
         <div class="carousel-item active">
