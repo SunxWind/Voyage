@@ -67,7 +67,6 @@ h1 {
 }
 
 .country-name-container {
-    padding: 0.7em;
     position: absolute;
     width: 100%;
     top: 25%;
@@ -128,15 +127,11 @@ h1 {
 }
 
 .recently-purchased-container {
-    display: flex;
     background: pink;
     height: 130px;
     width: 200px;
-    justify-content: center;
-    align-items: center;
     text-align: center;
     background: white;
-    opacity: 0.6;
 }
 
 .recently-purchased-link {
