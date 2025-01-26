@@ -91,10 +91,14 @@ class IndexView(TemplateView):
                 trips_list.append(trips_block)
                 trips_block = []
 
+        # Selecting 3 destinantions countries from promoted trips
         three_trips = trips_list[slice(1)]
 
+        # Filtering trips within 30 days of todays date
+        # Number of days can be changed in timedelda on the following line
         upcoming_cutof_date = datetime.now().date() + timedelta(days=30)
         upcoming_trips = Trip.objects.filter(departure_date__lte=upcoming_cutof_date, departure_date__gt=(datetime.now().date())+ timedelta(days=3)).order_by('departure_date')
+
 
         recently_purchased_trips = PurchasedTrip.objects.order_by('-id')[:5]
 
@@ -105,23 +109,6 @@ class IndexView(TemplateView):
             'recently_purchased_trips': recently_purchased_trips,
         }
         return context
-
-# Integrating search bar suggestions
-# class TripSearchView(TemplateView):
-#     def get(self, request, *args, **kwargs):
-#         query = request.GET.get('departure', '')
-#         results = []
-#         if query:
-#             all_trips = Trip.objects.filter()
-#             for trip in all_trips:
-#                 print(trip.where_to.name)
-#             print(f"query received: {query}")
-#             searched_trips = Trip.objects.filter(where_to__isnull=False, where_to__name__icontains=query).distinct()
-#             print(f"query results: {searched_trips}")
-#             suggestions = list(searched_trips.values_list('where_to__name'))
-#
-#         print(f"Response result: {suggestions}")
-#         return JsonResponse(list(suggestions), safe=False)
 
 
 class TripView(ListView):
@@ -151,24 +138,24 @@ class TripDetailsView(TemplateView):
         # In order to make the forcast API working uncomment the lines below and comment 4 lines
         # starting from "forcast = forcast_mock"
 
-        api = Api(pyweatherbit_key)
-        try:
-            # int('a')
-            forcast = api.get_forecast(city=str(trip.where_to.name),
-                                       country=str(trip.where_to.country.name),
-                                       days=10,
-                                       tp='daily').get()
+        # api = Api(pyweatherbit_key)
+        # try:
+        #     # int('a')
+        #     forcast = api.get_forecast(city=str(trip.where_to.name),
+        #                                country=str(trip.where_to.country.name),
+        #                                days=10,
+        #                                tp='daily').get()
+        #
+        #     for date in forcast:
+        #         date['week_day'] = date['datetime'].strftime('%A')[0:3]
+        #         date['date_smpl'] = date['datetime'].strftime('%d/%m')
+        # except ValueError:
+        #     forcast = None
 
-            for date in forcast:
-                date['week_day'] = date['datetime'].strftime('%A')[0:3]
-                date['date_smpl'] = date['datetime'].strftime('%d/%m')
-        except ValueError:
-            forcast = None
-
-        # forcast = forcast_mock
-        # for date in forcast:
-        #     date['week_day'] = date['datetime'].strftime('%A')[0:3]
-        #     date['date_smpl'] = date['datetime'].strftime('%d/%m')
+        forcast = forcast_mock
+        for date in forcast:
+            date['week_day'] = date['datetime'].strftime('%A')[0:3]
+            date['date_smpl'] = date['datetime'].strftime('%d/%m')
 
         context['forcast'] = forcast
         return context
@@ -392,6 +379,8 @@ class CountriesListView(TemplateView):
     template_name = 'countries_list.html'
 
     def get_context_data(self, **kwargs):
+        '''Looking through database for all countries that have trips to them'''
+
         all_trips = Trip.objects.filter()
         countries_list = []
         for trip in all_trips:
@@ -400,11 +389,9 @@ class CountriesListView(TemplateView):
         countries_set = set(countries_list)
         countries_list = sorted(list(countries_set))
 
-        print(countries_list)
         context = {
             'countries_list': countries_list
         }
-
         return context
 
 
@@ -412,6 +399,9 @@ class SearchResultsView(TemplateView):
     template_name = 'filtered_trips.html'
 
     def get_context_data(self, *args, **kwargs):
+        ''' Grabbing all relevant parameters from URL
+            Filtering trips based on the parameters
+        '''
         trips = Trip.objects.filter(departure_date__gte=(datetime.now().date() + timedelta(days=3)))
         continent = self.request.GET.get('s_continent', '')
         country = self.request.GET.get('s_country', '')
@@ -421,7 +411,6 @@ class SearchResultsView(TemplateView):
         standard = self.request.GET.get('standard','')
         adults = self.request.GET.get('adults','')
         children = self.request.GET.get('children','')
-
 
         if continent:
             trips = trips.filter(where_to_id__continent=continent)
