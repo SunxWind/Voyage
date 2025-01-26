@@ -467,3 +467,45 @@ class TripPurchaseFormTest(TestCase):
             }
         )
         self.assertFalse(form.is_valid())
+
+    def test_trip_purchase_form_birth_date_child_is_invalid(self):
+
+        form = TripPurchaseForm(
+            data={
+                'trip': '1',
+                'firstname': 'Rudolf',
+                'lastname': 'Vychodil',
+                'birth_date': '2011-01-12',
+                'email': 'rudolfvychodil@email.cz',
+                'phone_number': '+420353252161',
+                'amount_adult': '2',
+                'amount_child': '2',
+                'adult_price': '20000.00',
+                'child_price': '18000.00',
+                'total_adult_price': '40000.00',
+                'total_child_price': '36000.00',
+                'total_price': '76000.00'
+            }
+        )
+        self.assertFalse(form.is_valid())
+
+    def test_trip_purchase_form_no_adults_is_invalid(self):
+
+        form = TripPurchaseForm(
+            data={
+                'trip': '1',
+                'firstname': 'Rudolf',
+                'lastname': 'Vychodil',
+                'birth_date': '1995-01-12',
+                'email': 'rudolfvychodil@email.cz',
+                'phone_number': '+420353252161',
+                'amount_adult': '0',
+                'amount_child': '2',
+                'adult_price': '20000.00',
+                'child_price': '18000.00',
+                'total_adult_price': '40000.00',
+                'total_child_price': '36000.00',
+                'total_price': '76000.00'
+            }
+        )
+        self.assertFalse(form.is_valid())

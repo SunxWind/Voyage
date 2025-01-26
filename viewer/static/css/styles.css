@@ -115,7 +115,7 @@ h1 {
     top: 50%;
     left: 50%;
     color: white;
-    font-size: 50;
+    font-size: 3.5vw;
     transform: translate(-50%, -50%);
     text-shadow: black 0px 0 10px;
 }
