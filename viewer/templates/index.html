@@ -7,12 +7,12 @@
 
 
 {% block carousel %}
-<div class="search-bar-area-container">
-    <div class="destination-search-bar">
-        <input class="search-field" id="destination-country-input" type="text" placeholder="Country..." autocomplete="off" style="padding: 0.7em">
-        <input class="search-field" id="destination-city-input" type="text" placeholder="City..." autocomplete="off" style="padding: 0.7em">
-        <input class="search-field" id="destination-hotel-input" type="text" placeholder="Hotel..." autocomplete="off" style="padding: 0.7em">
-        <a  id="destination-link" href="{% url 'search_results' %}" class="btn btn-search" onclick="updateLink(event)">Search</a>
+<div class="search-bar-area-container mb-5">
+    <div class="d-flex justify-content-around align-items-center flex-wrap destination-search-bar">
+        <input class="search-field mb-3" id="destination-country-input" type="text" placeholder="Country..." autocomplete="off" style="padding: 0.7em">
+        <input class="search-field mb-3" id="destination-city-input" type="text" placeholder="City..." autocomplete="off" style="padding: 0.7em">
+        <input class="search-field mb-3" id="destination-hotel-input" type="text" placeholder="Hotel..." autocomplete="off" style="padding: 0.7em">
+        <a id="destination-link" href="{% url 'search_results' %}" class="btn btn-primary mb-3" style="font-size: 1.25rem" onclick="updateLink(event)">Search</a>
 
         <script>
             function updateLink(event) {
@@ -42,7 +42,7 @@
     </div>
 </div>
 
-<div id="carouselExampleIndicators" class="carousel slide d-flex flex-column" data-ride="carousel"  style="height: 435px">
+<div id="carouselExampleIndicators" class="carousel slide d-flex flex-column mb-2" data-ride="carousel">
     <div class="carousel-inner border border-1 border-white">
         <div class="carousel-item active">
             <img src="{% static 'images/Egypt.JPG' %}" class="d-block w-100" alt="Egypt">
@@ -75,7 +75,7 @@
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
     </a>
-    <div>
+    <div class="mt-5">
         <ol class="carousel-indicators">
             <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
             <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
@@ -85,8 +85,8 @@
 </div>
 
 {% if promoted_trips %}
-<div class="promoted-trips-container">
-    <div class="d-inline-flex align-items-start justify-content-center" style="height: 580px">
+<div class="promoted-trips-container mb-4">
+    <div class="d-inline-flex align-items-start justify-content-center" style="height: 560px">
         {% for trip in promoted_trips %}
         <div class="d-flex justify-content-around flex-column pl-3 pr-3" style="width: 370px; height: 550px">
             <img src="media/{{ trip.image_small }}" class="card-img-top" alt="{{ trip.where_to.name }}">
@@ -143,47 +143,49 @@
 </div>
 {% endif %}
 
-<h5 style="text-align: center; background: white; opacity: 0.6; padding: 0.5em; font-size: 50; color: #3F4A86; font-weight: bold">Explore by country</h5>
-<div class="filter-by-country">
-    <img class="globe-image" src="viewer/static/images/Globe.jpg" alt="globe_image" >
-    <div class="country-name-container">
-        {% for trips in three_trips %}
+<div class="card bg-dark text-white mb-3 border-1 border-white" style="height: 13em">
+    <div class="overflow-hidden">
+        <img class="card-img" src="viewer/static/images/Globe.jpg" alt="globe_image" style="height: 210px; width: 1200px">
+    </div>
+    <div class="card-img-overlay">
+        <h5 style="text-align: center; background: white; opacity: 0.6; padding: 0.5em; font-size: 30; color: #3F4A86; font-weight: bold">Explore by country</h5>
+        <div class="d-flex justify-content-around align-content-around flex-wrap mt-4">
+            {% for trips in three_trips %}
             {% for trip in trips %}
-                <a class='country-name-link' href="{% url 'search_results' %}?s_country={{trip.where_to.country.name}}" >
-                    <div class="country-name">{{ trip.where_to.country.name }}</div>
+            <div>
+                <a class="country-name-link"
+                   href="{% url 'search_results' %}?s_country={{trip.where_to.country.name}}">
+                    {{ trip.where_to.country.name }}
                 </a>
+            </div>
             {% endfor %}
-        {% endfor %}
-        <a class="see-more-link" href="{% url 'countries_list' %}" >
-            <div class="see-more">See more ...</div>
-        </a>
+            {% endfor %}
+            <a class="country-name-link"
+               href="{% url 'countries_list' %}">See more ...
+            </a>
+        </div>
+        </div>
     </div>
 </div>
 
 
-
-<h5 style="text-align: center; background: white; opacity: 0.6; padding: 0.5em; font-size: 50; color: #3F4A86; font-weight: bold">Explore by continent</h5>
+<h5 style="text-align: center; background: white; opacity: 0.6; padding: 0.5em; font-size: 30; color: #3F4A86; font-weight: bold">Explore by continent</h5>
 
 <div class="filter-by-continent" >
     <div class="continent-image-row">
          <div class="continent-image-area">
-             <a href="{% url 'search_results' %}?s_continent=Africa" >
-                  <img class="continent-image" src="viewer/static/images/Africa.jpg" alt="africa_image">
-                    <div class="continent-title">Africa</div>
-
-             </a>
-
+            <a href="{% url 'search_results' %}?s_continent=Africa" >
+                <img class="continent-image" src="viewer/static/images/Africa.jpg" alt="africa_image">
+                <div class="continent-title">Africa</div>
+            </a>
          </div>
-        <div class="continent-image-area">
+         <div class="continent-image-area">
             <a href="{% url 'search_results' %}?s_continent=Europe" >
                 <img class="continent-image" src="viewer/static/images/Europe.jpg" alt="europe_image">
-                    <div class="continent-title">Europe</div>
-
-         </a>
-        </div>
+                <div class="continent-title">Europe</div>
+            </a>
+         </div>
     </div>
-
-
 
     <div class="continent-image-row">
          <div class="continent-image-area">
@@ -245,9 +247,6 @@
         </a>
     </div>
     {% endfor %}
-
 </div>
-
-
 
 {% endblock %}
