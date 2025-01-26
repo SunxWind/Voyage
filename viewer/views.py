@@ -71,6 +71,10 @@ def purchase_approval(request):
     return render(request, 'purchase_approval.html')
 
 
+def trip_create_approval(request):
+    return render(request, 'trip_create_approval.html')
+
+
 class ProfileView(LoginRequiredMixin, TemplateView):
     template_name = 'profile.html'
 
@@ -148,36 +152,45 @@ class TripDetailsView(TemplateView):
 
         # Integrating weather API
         # Only 1500 requests per day to this API is free of charge
-        # In order to make the forcast API working uncomment the lines below and comment 4 lines
-        # starting from "forcast = forcast_mock"
+        # In order to make the forcast API working uncomment set the parameter mode = 'API',
+        # otherwise with mode = 'mockup' an unreal mockup forcast will be shown
 
-        api = Api(pyweatherbit_key)
-        try:
-            # int('a')
-            forcast = api.get_forecast(city=str(trip.where_to.name),
-                                       country=str(trip.where_to.country.name),
-                                       days=10,
-                                       tp='daily').get()
+        context['forcast'] = self.weather_forcast(country=str(trip.where_to.country.name),
+                                                  city=str(trip.where_to.name),
+                                                  days=16,
+                                                  tp='daily',
+                                                  mode='mockup')
+        return context
 
+    def weather_forcast(self, country, city, days, tp, mode='API'):
+
+        forcast = []
+        if mode == 'API':
+            api = Api(pyweatherbit_key)
+            try:
+                forcast = api.get_forecast(country=country,
+                                           city=city,
+                                           days=days,
+                                           tp=tp).get()
+
+                for date in forcast:
+                    date['week_day'] = date['datetime'].strftime('%A')[0:3]
+                    date['date_smpl'] = date['datetime'].strftime('%d/%m')
+            except ValueError:
+                forcast = None
+        elif mode == "mockup":
+            forcast = forcast_mock
             for date in forcast:
                 date['week_day'] = date['datetime'].strftime('%A')[0:3]
                 date['date_smpl'] = date['datetime'].strftime('%d/%m')
-        except ValueError:
-            forcast = None
 
-        # forcast = forcast_mock
-        # for date in forcast:
-        #     date['week_day'] = date['datetime'].strftime('%A')[0:3]
-        #     date['date_smpl'] = date['datetime'].strftime('%d/%m')
-
-        context['forcast'] = forcast
-        return context
+        return forcast
 
 
 class TripCreateView(StaffRequiredMixin, FormView):
     template_name = 'form_trip.html'
     form_class = TripForm
-    success_url = reverse_lazy('trip_add')
+    success_url = reverse_lazy('trip_create_approval')
     permission_required = 'viewer.create_trip'
 
     def get_context_data(self, **kwargs):
@@ -268,7 +281,7 @@ class PurchasedTripsView(ListView):
 class TripPurchaseView(LoginRequiredMixin, FormView):
     template_name = "form_trip_purchase.html"
     form_class = TripPurchaseForm
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('purchase_approval')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
