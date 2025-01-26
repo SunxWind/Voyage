@@ -81,7 +81,7 @@ class IndexView(TemplateView):
     model = Trip
 
     def get_context_data(self, **kwargs):
-        promoted_trips = Trip.objects.filter(promoted=True)
+        promoted_trips = Trip.objects.filter(promoted=True, departure_date__gt=(datetime.now().date()+timedelta(days=3)))
 
         trips_list = []
         trips_block = []
@@ -94,7 +94,7 @@ class IndexView(TemplateView):
         three_trips = trips_list[slice(1)]
 
         upcoming_cutof_date = datetime.now().date() + timedelta(days=30)
-        upcoming_trips = Trip.objects.filter(departure_date__lte=upcoming_cutof_date)
+        upcoming_trips = Trip.objects.filter(departure_date__lte=upcoming_cutof_date, departure_date__gt=(datetime.now().date())+ timedelta(days=3)).order_by('departure_date')
 
         recently_purchased_trips = PurchasedTrip.objects.order_by('-id')[:5]
 
@@ -414,7 +414,7 @@ class SearchResultsView(TemplateView):
     template_name = 'filtered_trips.html'
 
     def get_context_data(self, *args, **kwargs):
-        trips = Trip.objects.filter()
+        trips = Trip.objects.filter(departure_date__gte=(datetime.now().date() + timedelta(days=3)))
         continent = self.request.GET.get('s_continent', '')
         country = self.request.GET.get('s_country', '')
         city = self.request.GET.get('s_city','')
@@ -423,6 +423,7 @@ class SearchResultsView(TemplateView):
         standard = self.request.GET.get('standard','')
         adults = self.request.GET.get('adults','')
         children = self.request.GET.get('children','')
+
 
         if continent:
             trips = trips.filter(where_to_id__continent=continent)
