@@ -119,11 +119,11 @@ class PurchasedTrip(Model):
     firstname = CharField(max_length=128, null=False)
     lastname = CharField(max_length=128, null=False)
     birth_date = DateField(default=None, null=False)
-    email = EmailField(max_length=70, blank=False, unique=True, default=None, null=False)
+    email = EmailField(max_length=70, blank=False, default=None, null=False)
     phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
                                  message="Phone number must be entered in the format:"
                                          "'+999999999'. Up to 15 digits allowed.")
-    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True, unique=True)  # Validators should be a list
+    phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)
     amount_adult = IntegerField(default=None, null=False)
     amount_child = IntegerField(default=None, null=False)
     total_price = DecimalField(max_digits=8, decimal_places=2, default=None, null=False)
