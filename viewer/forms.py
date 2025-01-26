@@ -195,6 +195,10 @@ class TripPurchaseForm(TripPurchaseModelForm):
         print(f"Initial = '{initial}'")
         if initial > datetime.date.today():
             raise ValidationError("It is possible to set the date of birth in the past only.")
+        age = datetime.date.today().year - initial.year
+        print(f'Age = {age}')
+        if age < 18:
+            raise ValidationError("Trips can be purchased by adult persons only.")
         return initial
 
 

@@ -124,7 +124,6 @@ class IndexView(TemplateView):
 #         return JsonResponse(list(suggestions), safe=False)
 
 
-
 class TripView(ListView):
     template_name = 'trips.html'
     model = Trip
@@ -152,24 +151,24 @@ class TripDetailsView(TemplateView):
         # In order to make the forcast API working uncomment the lines below and comment 4 lines
         # starting from "forcast = forcast_mock"
 
-        # api = Api(pyweatherbit_key)
-        # try:
-        #     # int('a')
-        #     forcast = api.get_forecast(city=str(trip.where_to.name),
-        #                                country=str(trip.where_to.country.name),
-        #                                days=10,
-        #                                tp='daily').get()
-        #
-        #     for date in forcast:
-        #         date['week_day'] = date['datetime'].strftime('%A')[0:3]
-        #         date['date_smpl'] = date['datetime'].strftime('%d/%m')
-        # except ValueError:
-        #     forcast = None
+        api = Api(pyweatherbit_key)
+        try:
+            # int('a')
+            forcast = api.get_forecast(city=str(trip.where_to.name),
+                                       country=str(trip.where_to.country.name),
+                                       days=10,
+                                       tp='daily').get()
 
-        forcast = forcast_mock
-        for date in forcast:
-            date['week_day'] = date['datetime'].strftime('%A')[0:3]
-            date['date_smpl'] = date['datetime'].strftime('%d/%m')
+            for date in forcast:
+                date['week_day'] = date['datetime'].strftime('%A')[0:3]
+                date['date_smpl'] = date['datetime'].strftime('%d/%m')
+        except ValueError:
+            forcast = None
+
+        # forcast = forcast_mock
+        # for date in forcast:
+        #     date['week_day'] = date['datetime'].strftime('%A')[0:3]
+        #     date['date_smpl'] = date['datetime'].strftime('%d/%m')
 
         context['forcast'] = forcast
         return context
@@ -387,7 +386,6 @@ class PurchasedTripDeleteView(StaffRequiredMixin, DeleteView):
         if not request.user.is_staff:
             return redirect('/purchased_trips')
         return super().dispatch(request, *args, **kwargs)
-
 
 
 class CountriesListView(TemplateView):
