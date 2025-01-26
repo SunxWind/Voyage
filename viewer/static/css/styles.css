@@ -46,15 +46,17 @@ h1 {
 
 .last-minute-banner {
     position: absolute;
-    top: 45px;
-    left: -50px;
+    top: 4em;
+    left: -6em;
     background-color: red;
     color: white;
     transform: rotate(-44deg);
-    width: 20%;
-    padding: 7px 53px;
+    width: 20em;
+    padding: 0.5em;
     font-weight: bold;
-    font-size: 16;
+    font-size: 1.5em;
+    text-align: center;
+    box-shadow: 0 3px 15px -5px rgba(0, 0, 0, 1);
 
 }
 
