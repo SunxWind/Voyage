@@ -17,21 +17,27 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+from django.conf.urls.static import static
+
+import Voyage.settings as settings
+
 from viewer.views import (
     IndexView, TripView, TripDetailsView, TripCreateView, trip_create_approval, TripUpdateView, TripDeleteView,
     TripPurchaseView, PurchasedTripsView, PurchasedTripUpdateView, PurchasedTripDeleteView, CustomLoginView,
     RegisterView, ProfileView, logout_page, purchase_approval, CountriesListView, SearchResultsView
 )
 
-from django.contrib.auth import views
-import Voyage.settings as settings
-from django.conf.urls.static import static
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('smart_selects.urls',)),
     path('', IndexView.as_view(), name='index'),
+
+    path('accounts/login', CustomLoginView.as_view(), name='login'),
+    path('logout_page', logout_page, name='logout_page'),
+    path('accounts', include('django.contrib.auth.urls')),
+    path('register', RegisterView.as_view(), name='register'),
+    path('profile', ProfileView.as_view(), name='profile'),
 
     path('trips', TripView.as_view(), name='trips'),
     path('trip/details', TripDetailsView.as_view(), name='trip_details'),
@@ -46,16 +52,8 @@ urlpatterns = [
     path('purchased_trip/update/<pk>', PurchasedTripUpdateView.as_view(), name='purchased_trip_update'),
     path('purchased_trip/delete/<pk>', PurchasedTripDeleteView.as_view(), name='purchased_trip_delete'),
 
-    path('accounts/login', CustomLoginView.as_view(), name='login'),
-    path('logout_page', logout_page, name='logout_page'),
-    path('accounts', include('django.contrib.auth.urls')),
-    path('register', RegisterView.as_view(), name='register'),
-    path('profile', ProfileView.as_view(), name='profile'),
-
     path('search_results/', SearchResultsView.as_view(), name='search_results'),
     path('countries_list', CountriesListView.as_view(), name="countries_list"),
-
-
 ]
 
 if settings.DEBUG:

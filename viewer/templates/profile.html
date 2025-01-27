@@ -24,7 +24,9 @@
         {% else %}
         <p class="card-text">State: <span style="color: red">Inactive</span></p>
         {% endif %}
-        <p class="card-text">Previous login on {{ user.last_login|date:'M d, Y' }} at {{user.last_login|date:'H:i:s' }}</p>
+        <p class="card-text">
+            Previous login on {{ user.last_login|date:'M d, Y' }} at {{user.last_login|date:'H:i:s' }}
+        </p>
     </div>
 </div>
 {% endblock %}

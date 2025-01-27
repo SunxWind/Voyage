@@ -27,59 +27,64 @@
 
 <body class="bgcolor-light">
 <div class="d-flex flex-column">
-<nav class="navbar navbar-expand-lg navbar-dark bgcolor-dark-dark">
-    <div class="container fixed">
-        <a class="navbar-brand {% active_link 'index' strict=True %}" href="{% url 'index' %}">Voyage</a>
-        <button
-                class="navbar-toggler" type="button"
-                data-toggle="collapse" data-target="#navbarNavAltMarkup"
-        >
-        <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link {% active_link 'index' strict=True %}" href="{% url 'index' %}">Home</a>
-                </li>
-                {% if request.user.is_staff %}
-                <li class="nav-item {% active_link 'trips' strict=True %}">
-                    <a class="nav-link" href="{% url 'trips' %}">Trips</a>
-                </li>
-                <li class="nav-item {% active_link 'trip_add' strict=True %}">
-                    <a class="nav-link" href="{% url 'trip_add' %}">Add trip</a>
-                </li>
-                <li class="nav-item {% active_link 'purchased_trips' strict=True %}">
-                    <a class="nav-link" href="{% url 'purchased_trips' %}">Purchased trips</a>
-                </li>
-                {% endif %}
-            </ul>
-            <ul class="navbar-nav">
-                {% if user.is_authenticated %}
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle {% active_link 'trips' strict=True %}" href="#" id="navbarDropdownMenuLink" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{ user.username }}
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
-                        <form method="post" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button class="dropdown-item" type="submit">Logout</button>
-                        </form>
-                    </div>
-                </li>
-                {% else %}
-                <li class="nav-item">
-                    <a class="nav-link {% active_link 'login' strict=True %}" href="{% url 'login' %}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link {% active_link 'register' strict=True %}" href="{% url 'register' %}">Register</a>
-                </li>
-                {% endif %}
-            </ul>
+    <nav class="navbar navbar-expand-lg navbar-dark bgcolor-dark-dark">
+        <div class="container fixed">
+            <a class="navbar-brand {% active_link 'index' strict=True %}" href="{% url 'index' %}">Voyage</a>
+            <button
+                    class="navbar-toggler" type="button"
+                    data-toggle="collapse" data-target="#navbarNavAltMarkup"
+            >
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link {% active_link 'index' strict=True %}" href="{% url 'index' %}">Home</a>
+                    </li>
+                    {% if request.user.is_staff %}
+                    <li class="nav-item {% active_link 'trips' strict=True %}">
+                        <a class="nav-link" href="{% url 'trips' %}">Trips</a>
+                    </li>
+                    <li class="nav-item {% active_link 'trip_add' strict=True %}">
+                        <a class="nav-link" href="{% url 'trip_add' %}">Add trip</a>
+                    </li>
+                    <li class="nav-item {% active_link 'purchased_trips' strict=True %}">
+                        <a class="nav-link" href="{% url 'purchased_trips' %}">Purchased trips</a>
+                    </li>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle {% active_link 'trips' strict=True %}" href="#"
+                           id="navbarDropdownMenuLink" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ user.username }}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                            <form method="post" action="{% url 'logout' %}">
+                                {% csrf_token %}
+                                <button class="dropdown-item" type="submit">Logout</button>
+                            </form>
+                        </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link {% active_link 'login' strict=True %}" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% active_link 'register' strict=True %}" href="{% url 'register' %}">
+                            Register
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+</div>
+
 <div class="container bgcolor-dark">
     <div class="jumbotron bgcolor-dark pr-0 pl-0 pu-0 pb-2">
         {% block carousel %}{% endblock %}
@@ -88,6 +93,7 @@
         {% block content %}{% endblock %}
     </div>
 </div>
+
 <div class="footer bg-dark">
     {% block footer %}{% endblock %}
     <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
@@ -126,5 +132,4 @@
     <p class="text-center pb-5 text-white">© 2025 by Solar Empire Inc.</p>
 </div>
 </body>
-
 </html>

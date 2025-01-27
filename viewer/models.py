@@ -1,20 +1,20 @@
 from django.db import models
-from django_countries.fields import CountryField
-from django.db.models import (
-    DO_NOTHING, CharField, DateField, DateTimeField, ForeignKey, IntegerField, DecimalField,
-    Model, TextField, ImageField, BooleanField, EmailField
-)
+
 from django.core.validators import RegexValidator
+from django.core.validators import MinValueValidator
+
+from django_countries.fields import CountryField
 from smart_selects.db_fields import ChainedForeignKey
-from django.core.validators import MinValueValidator, MinLengthValidator
 
-# from django.contrib.auth.models import User
-
-# Create your models here.
+from django.db.models import (
+    DO_NOTHING, CharField, DateField, ForeignKey, IntegerField, DecimalField, Model, TextField, ImageField,
+    BooleanField, EmailField
+)
 
 
 class City(Model):
 
+    # These constants contain continents
     AF = 'Africa'
     AN = 'Antarctica'
     AS = 'Asia'
@@ -23,6 +23,7 @@ class City(Model):
     OC = 'Australia & Oceania'
     SA = 'South America'
 
+    # This dictionary contains choices for the continent field
     CONTINENT_CHOICES = {
         None: 'select continent',
         AF: 'Africa',
@@ -35,6 +36,7 @@ class City(Model):
     }
 
     name = CharField(max_length=30)
+    # The CountryField is a special Django field which contains choices of countries from all over the world
     country = CountryField(blank_label="select country")
     continent = CharField(max_length=30, choices=CONTINENT_CHOICES, blank=True)
 
@@ -60,11 +62,13 @@ class Airport(Model):
 
 
 class Trip(Model):
+    # These constants contain the abbreviations for hotel service standards
     BB = 'BB'
     HB = 'HB'
     FB = 'FB'
     AI = 'AI'
 
+    # This dictionary contains choices for hotel service standards
     STANDARD_CHOICES = {
         None: 'select service standard',
         BB: 'bed & breakfast',
@@ -73,7 +77,9 @@ class Trip(Model):
         AI: 'all inclusive',
         }
 
-    code = CharField(max_length=7,  validators=[MinLengthValidator(7)])
+    code_regex = RegexValidator(regex=r'^[A-Za-z]{4}\d{3}',  # This is the validator for the code format
+                                message="The code must correspond to the above described format.")
+    code = CharField(max_length=7,  validators=[code_regex])
     where_from = ForeignKey(City, on_delete=DO_NOTHING, related_name="where_from", default=None)
     airport_depart = ChainedForeignKey(
         Airport,
@@ -120,7 +126,7 @@ class PurchasedTrip(Model):
     lastname = CharField(max_length=128, null=False)
     birth_date = DateField(default=None, null=False)
     email = EmailField(max_length=70, blank=False, default=None, null=False)
-    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',
+    phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$',  # This is the validator for the phone number format
                                  message="Phone number must be entered in the format:"
                                          "'+999999999'. Up to 15 digits allowed.")
     phone_number = models.CharField(validators=[phone_regex], max_length=17, blank=True)

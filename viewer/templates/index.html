@@ -9,10 +9,14 @@
 {% block carousel %}
 <div class="search-bar-area-container mb-5">
     <div class="d-flex justify-content-around align-items-center flex-wrap destination-search-bar">
-        <input class="search-field mb-3" id="destination-country-input" type="text" placeholder="Country..." autocomplete="off" style="padding: 0.7em">
-        <input class="search-field mb-3" id="destination-city-input" type="text" placeholder="City..." autocomplete="off" style="padding: 0.7em">
-        <input class="search-field mb-3" id="destination-hotel-input" type="text" placeholder="Hotel..." autocomplete="off" style="padding: 0.7em">
-        <a id="destination-link" href="{% url 'search_results' %}" class="btn btn-primary mb-3" style="font-size: 1.25rem" onclick="updateLink(event)">Search</a>
+        <input class="search-field mb-3" id="destination-country-input" type="text" placeholder="Country..."
+               autocomplete="off" style="padding: 0.7em">
+        <input class="search-field mb-3" id="destination-city-input" type="text" placeholder="City..."
+               autocomplete="off" style="padding: 0.7em">
+        <input class="search-field mb-3" id="destination-hotel-input" type="text" placeholder="Hotel..."
+               autocomplete="off" style="padding: 0.7em">
+        <a id="destination-link" href="{% url 'search_results' %}" class="btn btn-primary mb-3"
+           style="font-size: 1.25rem" onclick="updateLink(event)">Search</a>
         <script>
             function updateLink(event) {
                 event.preventDefault();
@@ -48,12 +52,15 @@
                 <div class="carousel-item {% if forloop.first %}active{% endif %}" >
                     <a href="{% url 'trip_details' %}?trip={{ trip.id }}">
                     {% if trip.image %}
-                    <img src="{{ trip.image.url }}" class="d-block w-100" alt="{{trip.where_to.name}}_image"  style="height: 27em; width: 100em; object-fit: cover; object-position: center">
+                    <img src="{{ trip.image.url }}" class="d-block w-100" alt="{{trip.where_to.name}}_image"
+                         style="height: 27em; width: 100em; object-fit: cover; object-position: center">
                     {% else %}
-                    <img src="{% static 'images/no_image_icon.png' %}" class="d-block w-100" alt="no_image" style="object-position: center">
+                    <img src="{% static 'images/no_image_icon.png' %}" class="d-block w-100" alt="no_image"
+                         style="object-position: center">
                     {% endif %}
                     <div class="last-minute-banner">LAST MINUTE</div>
-                    <div class="carousel-caption d-none d-md-block text-dark-dark bg-transp-60" style="font-weight: bold">
+                    <div class="carousel-caption d-none d-md-block text-dark-dark bg-transp-60"
+                         style="font-weight: bold">
                         <h5 style="font-weight: bold">{{ trip.where_to }}</h5>
                         <h5>{{ trip.where_to_hotel.name }}</h5>
                         <p>{{ trip.short_description }}</p>
@@ -73,7 +80,8 @@
         <div class="mt-5">
             <ol class="carousel-indicators">
                 {% for trip in upcoming_trips %}
-                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter0 }}" class="{% if forloop.first %}active{% endif %}"></li>
+                    <li data-target="#carouselExampleIndicators" data-slide-to="{{ forloop.counter0 }}"
+                        class="{% if forloop.first %}active{% endif %}"></li>
                 {% endfor %}
             </ol>
         </div>
@@ -84,7 +92,8 @@
 <div class="promoted-trips-container mb-4">
     <div class="d-inline-flex align-items-start justify-content-around" style="height: 580px">
         {% for trip in promoted_trips %}
-        <div class="d-flex justify-content-around flex-column ml-3 mr-3 border border-1 border-white" style="width: 370px; height: 575px">
+        <div class="d-flex justify-content-around flex-column ml-3 mr-3 border border-1 border-white"
+             style="width: 370px; height: 575px">
             {% if trip.image_small %}
             <img src="media/{{ trip.image_small }}" class="card-img-top" alt="{{ trip.where_to.name }}">
             {% else %}
@@ -95,7 +104,9 @@
                 <p class="card-text">{{ trip.short_description }}</p>
                 <div class="card-footer d-inline-flex justify-content-between mt-auto">
                     <h5>Price</h5>
-                    <a href="{% url 'trip_details' %}?trip={{ trip.id }}" class="btn btn-primary">{{ trip.adult_price }}</a>
+                    <a href="{% url 'trip_details' %}?trip={{ trip.id }}" class="btn btn-primary">
+                        {{ trip.adult_price }}
+                    </a>
                 </div>
             </div>
         </div>
@@ -106,20 +117,20 @@
 
 <div class="card bg-dark text-white mb-4 border-1 border-white" style="height: 13em">
     <div class="overflow-hidden">
-        <img class="card-img" src="{% static '/images/Globe.jpg' %}" alt="globe_image" style="height: 210px; width: 1200px">
+        <img class="card-img" src="{% static '/images/Globe.jpg' %}" alt="globe_image"
+             style="height: 210px; width: 1200px">
     </div>
     <div class="card-img-overlay">
-        <h5 style="text-align: center; background: white; opacity: 0.6; padding: 0.5em; font-size: 30; color: #3F4A86; font-weight: bold">Explore by country</h5>
+        <h5 style="text-align: center; background: white; opacity: 0.6; padding: 0.5em; font-size: 30; color: #3F4A86;
+         font-weight: bold">Explore by country</h5>
         <div class="d-flex justify-content-around align-content-around flex-wrap mt-4">
-            {% for trips in three_trips %}
-            {% for trip in trips %}
+            {% for trip in countries_trips %}
             <div>
                 <a class="country-name-link"
                    href="{% url 'search_results' %}?s_country={{trip.where_to.country.name}}">
                     {{ trip.where_to.country.name }}
                 </a>
             </div>
-            {% endfor %}
             {% endfor %}
             <a class="country-name-link"
                href="{% url 'countries_list' %}">See more ...
@@ -128,7 +139,10 @@
     </div>
 </div>
 
-<h5 style="text-align: center; background: white; opacity: 0.6; padding: 0.5em; font-size: 30; color: #3F4A86; font-weight: bold">Explore by continent</h5>
+<h5 style="text-align: center; background: white; opacity: 0.6; padding: 0.5em; font-size: 30; color: #3F4A86;
+ font-weight: bold">
+    Explore by continent
+</h5>
 <div class="filter-by-continent mb-4" >
     <div class="continent-image-row">
          <div class="continent-image-area">
@@ -189,7 +203,10 @@
     </div>
 </div>
 
-<h3 style="text-align: center; background: white; opacity: 0.6; padding: 0.3em; font-size: 30; color: #3F4A86; font-weight: bold">Others have purchased</h3>
+<h3 style="text-align: center; background: white; opacity: 0.6; padding: 0.3em; font-size: 30; color: #3F4A86;
+ font-weight: bold">
+    Others have purchased
+</h3>
 <div class="d-flex justify-content-around align-content-around flex-wrap mt-2 recently-purchased-area-container">
     {% for trip in recently_purchased_trips %}
     <div class="recently-purchased-container border border-1 border-white m-2">

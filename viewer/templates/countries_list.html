@@ -1,20 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
+
 {% block title %}
     Countries List
 {% endblock %}
 
 {% block content %}
-    <div class="countries-list-columns">
-        {% for country in countries_list %}
-
-            <a class='country-list-link' href="{% url 'search_results' %}?s_country={{country}}">
-                <h2>{{country}}</h2>
-            </a>
-        {% endfor %}
-    </div>
-
-
-
-
+<div class="countries-list-columns">
+    {% for country in countries_list %}
+    <a class='country-list-link' href="{% url 'search_results' %}?s_country={{country}}"><h2>{{country}}</h2></a>
+    {% endfor %}
+</div>
 {% endblock %}

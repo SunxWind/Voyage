@@ -1,6 +1,6 @@
 import datetime
 
-
+# This is the mockup for weather forcast in case if the API is not used during debugging (see TripDetailsView)
 daly_forcast = {'app_max_temp': 20.8, 'app_min_temp': 13, 'clouds': 23, 'clouds_hi': 9, 'clouds_low': 45,
                 'clouds_mid': 32, 'datetime': datetime.datetime(2025, 1, 22, 0, 0),
                 'dewpt': 11.9, 'high_temp': 21.3, 'low_temp': 12.4, 'max_temp': 21.3, 'min_temp': 13, 'moon_phase': 0.36,

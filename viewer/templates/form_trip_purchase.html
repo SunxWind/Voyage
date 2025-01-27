@@ -52,14 +52,18 @@
         <div class="row pt-4 pb-4 border-bottom">
             <div class="col">
                 <div class="form-group">
-                    <label for="{{ form.amount_adult.id_for_label }}">Adults (available places - {{ trip.adult_places }}):</label>
+                    <label for="{{ form.amount_adult.id_for_label }}">
+                        Adults (available places - {{ trip.adult_places }}):
+                    </label>
                     {{ form.amount_adult }}
                     <p class="warning-text pt-2">{{ form.amount_adult.errors.as_text }}</p>
                 </div>
             </div>
             <div class="col">
                 <div class="form-group">
-                    <label for="{{ form.amount_child.id_for_label }}">Children (available places - {{ trip.child_places }}):</label>
+                    <label for="{{ form.amount_child.id_for_label }}">
+                        Children (available places - {{ trip.child_places }}):
+                    </label>
                     {{ form.amount_child }}
                     <p class="warning-text pt-2">{{ form.amount_child.errors.as_text }}</p>
                 </div>

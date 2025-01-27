@@ -6,67 +6,19 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from unittest import skip
 
 from Voyage.settings import BASE_DIR
-from viewer.forms import TripPurchaseForm, TripForm
 from viewer.models import City, Airport, Hotel, Trip, PurchasedTrip
-
-
-class ExampleTestCase(TestCase):
-
-    @classmethod
-    def setUpTestData(cls):
-        print("setUpTestData: spustí se jednou na začátku a nastaví (vytvoří) testovací data.")
-
-    def setUp(self):
-        print("setUp: spustí se před každým testem")
-
-    def test_false(self):
-        print("Testovací metoda: test_false")
-        result = False
-        self.assertFalse(result)
-
-    def test_add(self):
-        print("Testovací metoda: test_add")
-        result = 1 + 4
-        self.assertEqual(result, 5)
+from viewer.forms import TripPurchaseForm, TripForm
 
 
 class TripFormTest(TestCase):
-    """
-    def __init__(self):
-        super().__init__()
-    test_image_path = (Path(__file__).resolve().parent.parent / "media/images/Beijing.jpg")
-    test_small_image_path = (Path(__file__).resolve().parent.parent / "media/images/Beijing-card.jpg")
-    """
-
-    """
-    def generate_img_file(self, file_name):
-
-        file = io.BytesIO()
-        image = Image.new('RGBA', size=(275, 200), color=(155, 0, 0))
-        image.save(file, 'png')
-        file.name = f'{file_name}.png'
-        file.seek(0)
-
-        return file
-    """
-
     @classmethod
     def setUpTestData(cls):
 
-        City.objects.create(name='Prague',
-                            country='Czech Republic',
-                            continent='Europe'
-                            )
+        City.objects.create(name='Prague', country='Czech Republic', continent='Europe')
 
-        City.objects.create(name='Beijing',
-                            country='China',
-                            continent='Asia'
-                            )
+        City.objects.create(name='Beijing', country='China', continent='Asia')
 
-        City.objects.create(name='Cairo',
-                            country='Egypt',
-                            continent='Africa'
-                            )
+        City.objects.create(name='Cairo', country='Egypt', continent='Africa')
 
         Hotel.objects.create(name='Aquapalace Hotel',
                              description='Some description',
@@ -187,7 +139,7 @@ class TripFormTest(TestCase):
         )
         self.assertFalse(form.is_valid())
 
-    def test_trip_form_digital_code_is_invalid(self):
+    def test_trip_form_digits_code_is_invalid(self):
 
         form = TripForm(
             data={
@@ -338,15 +290,9 @@ class TripPurchaseFormTest(TestCase):
     @classmethod
     def setUpTestData(cls):
 
-        City.objects.create(name='Prague',
-                            country='Czech Republic',
-                            continent='Europe'
-                            )
+        City.objects.create(name='Prague', country='Czech Republic', continent='Europe')
 
-        City.objects.create(name='Beijing',
-                            country='China',
-                            continent='Asia'
-                            )
+        City.objects.create(name='Beijing', country='China', continent='Asia')
 
         Hotel.objects.create(name='Celebrity International Grand Hotel',
                              description='Some description',
